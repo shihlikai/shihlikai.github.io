@@ -1,0 +1,8 @@
+{
+  "name": "shihlikai.github.io",
+  "version": "1.0.0",
+  "dependencies": {
+    "eslint": "^7.3.0",
+    "eslint-plugin-html": "^6.0.2"
+  }
+}

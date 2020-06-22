@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Todo List</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css"/>
+</head>
+<body>
+<div id="app" class="container my-3">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">待辦事項</span>
+    </div>
+    <input type="text" class="form-control" placeholder="準備要做的任務" id="newTodo">
+    <div class="input-group-append">
+      <button class="btn btn-primary" type="button" id="addTodo">新增</button>
+    </div>
+  </div>
+  <div class="card text-center">
+    <ul class="list-group list-group-flush text-left" id="todoList">
+    </ul>
+    <div class="card-footer d-flex justify-content-between">
+      <span>還有 <span id="taskCount">0</span> 筆任務</span>
+      <a href="#" id="clearTask">清除所有任務</a>
+    </div>
+  </div>
+</div>
+<script>
+  const todolist = []
+  document.querySelector('#addTodo').addEventListener('click', addTask)
+  document.querySelector('#clearTask').addEventListener('click', clearAllTask)
+
+  function addTask() {
+    const newTodo = document.querySelector('#newTodo')
+    const todo = newTodo.value
+    if (todo.length === 0) {
+      return
+    }
+    newTodo.value = ''
+    addTodoList(todo)
+  }
+
+  function addTodoList(todo) {
+    todolist.unshift({
+      id: (new Date()).getTime().toString(),
+      title: todo
+    })
+    renderTodoList()
+  }
+
+  function removeTask(id) {
+    todolist.forEach((item, index) => {
+      if (item.id === id){
+        todolist.splice(index, 1)
+        return false
+      }
+    })
+    renderTodoList()
+  }
+
+  function completedOrIncompleteTask(id) {
+    todolist.forEach(item => {
+      if (item.id === id){
+        item.completed = !(item.completed || false)
+        return false
+      }
+    })
+    renderTodoList()
+  }
+
+  function clearAllTask() {
+    todolist.splice(0, todolist.length)
+    renderTodoList()
+  }
+
+  function renderTodoList() {
+    let output = ''
+    todolist.forEach(item => {
+      console.log(item.completed)
+      output += `<li class="list-group-item">
+        <div class="d-flex">
+        <div class="form-check">
+        <input type="checkbox" class="form-check-input" ${item.completed ? 'checked' : ''} data-action="complete" data-id="${item.id}">
+        <label class="form-check-label ${item.completed ? 'completed' : ''}" data-action="complete" data-id="${item.id}"> ${item.title}</label>
+        </div>
+        <button type="button" class="close ml-auto" aria-label="Close">
+        <span aria-hidden="true" data-action="remove" data-id="${item.id}">&times;</span>
+        </button>
+        </div>
+        </li>`
+    })
+
+    document.querySelector('#todoList').innerHTML = output
+    document.querySelectorAll('#todoList > li [data-action="remove"]').forEach(node => {
+      node.addEventListener('click', function () {
+        removeTask(this.getAttribute('data-id'))
+      })
+    })
+    document.querySelectorAll('#todoList > li input[type="checkbox"]').forEach(node => {
+      node.addEventListener('click', function () {
+        completedOrIncompleteTask(this.getAttribute('data-id'))
+      })
+    })
+    document.querySelector('#taskCount').innerHTML = todolist.length.toString()
+  }
+</script>
+<style>
+  .completed {
+    text-decoration: line-through
+  }
+</style>
+</body>
+</html>
