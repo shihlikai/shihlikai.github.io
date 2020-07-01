@@ -8,35 +8,32 @@ export default {
     categories: {},
     pageRow: 18,
     currentPage: 1,
-    category: ''
+    category: '',
+    pagination: {}
   },
   created: function () {
     $.LoadingOverlay('show', {
       text: 'Loading...',
       background: '#FFFFFF'
     })
-    this.fetchAllProducts().then(() => {
+    const vm = this
+    this.fetchProducts(1).then(() => {
+      const total_pages = vm.data.pagination.total_pages
+      return Promise.all(Array.from(Array(total_pages), (_, index) => index + 1).slice(1).map(page => vm.fetchProducts(page)))
+    }).then(() => {
       $.LoadingOverlay('hide')
-      this.assort()
-      this.render()
+        this.assort()
+        this.render()
     })
   },
-  fetchAllProducts: function () {
+  fetchProducts: function (currentPage) {
     const vm = this
-    return new Promise(resolve => {
-      vm.fetchProducts(1, resolve)
-    })
-  },
-  fetchProducts: function (currentPage, resolve) {
-    const vm = this
-    $.LoadingOverlay('text', `Fetch API Page ${currentPage}`)
-    api.getProducts(currentPage).then(products => {
+    return api.getProducts(currentPage).then(products => {
       if (products.data.length > 0) {
         vm.data.products.push(...products.data)
-        vm.fetchProducts(currentPage + 1, resolve)
-      } else {
-        resolve()
+        vm.data.pagination = products.meta.pagination
       }
+      return Promise.resolve()
     })
   },
   assort: function () {
