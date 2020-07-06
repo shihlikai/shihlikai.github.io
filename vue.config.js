@@ -1,7 +1,7 @@
 const app = require('./src/app.config')
 
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/dist/' : '/',
+  publicPath: './',
   chainWebpack: config => {
     config.plugin('html')
       .tap(args => {
