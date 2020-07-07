@@ -128,6 +128,12 @@ import { getAdminProducts, patchAdminProduct, postAdminProduct, deleteAdminProdu
 const product_list = '商品列表讀取中'
 const product_update = '商品資料更新中'
 const product_delete = '商品資料刪除中'
+const formTemplate = {
+  enabled: true,
+  imageUrl: []
+}
+Object.freeze(formTemplate)
+
 export default {
   data: function () {
     return {
@@ -136,9 +142,7 @@ export default {
       dialog: false,
       products: [],
       pagination: {},
-      form: {
-        imageUrl: []
-      }
+      form: this.deepCopy(formTemplate)
     }
   },
   created () {
@@ -210,9 +214,7 @@ export default {
       })
     },
     handleCreateClick () {
-      this.form = {
-        imageUrl: []
-      }
+      this.form = this.deepCopy(formTemplate)
       this.dialog = true
     },
     cancelForm () {
