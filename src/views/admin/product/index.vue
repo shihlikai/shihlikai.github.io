@@ -182,16 +182,22 @@ export default {
       this.dialog = true
     },
     handleDeleteClick ({ row }) {
-      return new Promise(resolve => {
-        this.loadingText = product_delete
-        this.loading = true
-        deleteAdminProduct(row.id)
-          .then(() => {
-            return this.updateProductsList()
-          }).finally(() => {
-            this.loading = false
-            resolve()
-          })
+      return this.$confirm(`${row.title} 商品資料?`, '確認刪除', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return new Promise(resolve => {
+          this.loadingText = product_delete
+          this.loading = true
+          deleteAdminProduct(row.id)
+            .then(() => {
+              return this.updateProductsList()
+            }).finally(() => {
+              this.loading = false
+              resolve()
+            })
+        })
       })
     },
     handleSubmitClick () {
