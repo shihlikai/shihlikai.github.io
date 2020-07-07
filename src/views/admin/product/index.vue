@@ -79,10 +79,10 @@
               </div>
               <div style="display: flex;">
                 <el-form-item label="原價" style="width: 50%; padding-right: 20px;">
-                  <el-input v-model="form.origin_price" autocomplete="off" />
+                  <el-input-number v-model="form.origin_price" :min="1" controls-position="right" style="width:100%;" />
                 </el-form-item>
                 <el-form-item label="售價" style="width: 50%;">
-                  <el-input v-model="form.price" autocomplete="off" />
+                  <el-input-number v-model="form.price" :min="1" controls-position="right" style="width:100%;" />
                 </el-form-item>
               </div>
               <el-form-item label="產品描述">
@@ -129,6 +129,8 @@ const product_list = '商品列表讀取中'
 const product_update = '商品資料更新中'
 const product_delete = '商品資料刪除中'
 const formTemplate = {
+  origin_price: 1,
+  price: 1,
   enabled: true,
   imageUrl: []
 }
