@@ -1,10 +1,7 @@
 <template>
-  <app-main />
+  <router-view />
 </template>
 <script>
 export default {
-  components: {
-    AppMain: () => import('@/layouts/components/AppMain')
-  }
 }
 </script>

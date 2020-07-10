@@ -1,16 +1,24 @@
-import profile from './profile.js'
+import { getAccessToken } from '@/assets/utils'
 import axios from 'axios'
 
-const baseUrl = `https://course-ec-api.hexschool.io/api/${profile.uuid}`
-const config = {
-  headers: {
-    'Authorization': 'Bearer ' + profile.token
+const baseUrl = `https://course-ec-api.hexschool.io/api/`
+
+function getInfo () {
+  const accessToken = getAccessToken()
+  return {
+    authorityUrl: `${baseUrl}${accessToken.uuid}`,
+    config: {
+      headers: {
+        'Authorization': 'Bearer ' + accessToken.token
+      }
+    }
   }
 }
 
 export function getProducts (page) {
   return new Promise((resolve, reject) => {
-    axios.get(`${baseUrl}/ec/products?page=${page}`, config)
+    const { authorityUrl, config } = getInfo()
+    axios.get(`${authorityUrl}/ec/products?page=${page}`, config)
       .then(res => {
         resolve(res.data)
       })
@@ -22,7 +30,8 @@ export function getProducts (page) {
 
 export function getAdminProducts (page) {
   return new Promise((resolve, reject) => {
-    axios.get(`${baseUrl}/admin/ec/products?page=${page}`, config)
+    const { authorityUrl, config } = getInfo()
+    axios.get(`${authorityUrl}/admin/ec/products?page=${page}`, config)
       .then(res => {
         resolve(res.data)
       })
@@ -34,7 +43,8 @@ export function getAdminProducts (page) {
 
 export function patchAdminProduct (id, body) {
   return new Promise((resolve, reject) => {
-    axios.patch(`${baseUrl}/admin/ec/product/${id}`, body, config)
+    const { authorityUrl, config } = getInfo()
+    axios.patch(`${authorityUrl}/admin/ec/product/${id}`, body, config)
       .then(res => {
         resolve(res.data)
       })
@@ -46,7 +56,8 @@ export function patchAdminProduct (id, body) {
 
 export function deleteAdminProduct (id) {
   return new Promise((resolve, reject) => {
-    axios.delete(`${baseUrl}/admin/ec/product/${id}`, config)
+    const { authorityUrl, config } = getInfo()
+    axios.delete(`${authorityUrl}/admin/ec/product/${id}`, config)
       .then(res => {
         resolve(res.data)
       })
@@ -58,12 +69,25 @@ export function deleteAdminProduct (id) {
 
 export function postAdminProduct (body) {
   return new Promise((resolve, reject) => {
-    axios.post(`${baseUrl}/admin/ec/product`, body, config)
+    const { authorityUrl, config } = getInfo()
+    axios.post(`${authorityUrl}/admin/ec/product`, body, config)
       .then(res => {
         resolve(res.data)
       })
       .catch(error => {
         reject(error)
+      })
+  })
+}
+
+export function postAdminLogin (body) {
+  return new Promise((resolve, reject) => {
+    axios.post(`${baseUrl}auth/login`, body)
+      .then(res => {
+        resolve(res.data)
+      })
+      .catch(error => {
+        reject(error.response.data)
       })
   })
 }

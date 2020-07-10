@@ -5,12 +5,27 @@
     </div>
     <div style="font-size: 12px; position: absolute; right: 0px;padding: 10px;">
       <span>Admin</span>
+      <el-button style="margin-left: 10px;" type="info" icon="el-icon-eleme" plain circle @click="handleLogoutClick" />
     </div>
   </div>
 </template>
 
 <script>
+import { removeAccessToken } from '@/assets/utils'
 export default {
-  name: 'HeaderBar'
+  name: 'HeaderBar',
+  methods: {
+    handleLogoutClick () {
+      removeAccessToken()
+      this.$message({
+        duration: 1000,
+        message: '登出成功',
+        type: 'success',
+        onClose: () => {
+          this.$router.push('/admin/login')
+        }
+      })
+    }
+  }
 }
 </script>
