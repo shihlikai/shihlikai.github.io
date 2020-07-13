@@ -5,7 +5,7 @@
     </div>
     <div style="font-size: 12px; position: absolute; right: 0px;padding: 10px;">
       <span>Admin</span>
-      <el-button style="margin-left: 10px;" type="info" icon="el-icon-eleme" plain circle @click="handleLogoutClick" />
+      <el-button style="margin-left: 10px;" size="mini" type="info" plain :disabled="disabled" @click="handleLogoutClick">Log out</el-button>
     </div>
   </div>
 </template>
@@ -14,8 +14,14 @@
 import { removeAccessToken } from '@/assets/utils'
 export default {
   name: 'HeaderBar',
+  data () {
+    return {
+      disabled: false
+    }
+  },
   methods: {
     handleLogoutClick () {
+      this.disabled = true
       removeAccessToken()
       this.$message({
         duration: 1000,

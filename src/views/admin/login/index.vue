@@ -29,7 +29,7 @@
                   <input v-model="email" type="text">
                   <br>
                   <div>Passowrd:</div>
-                  <input v-model="password" type="password">
+                  <input v-model="password" type="password" @keydown.enter="handleLoginClick">
                   <br>
                   <br>
                   <button type="button" @click="handleLoginClick">Log in</button>

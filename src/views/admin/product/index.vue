@@ -64,6 +64,10 @@
               <div style="border: #1abc9c solid 1px;">
                 <el-image :lazy="true" :src="form.imageUrl[0]" style="width: 100%;" />
               </div>
+              <div style="margin-top: 40px;">
+                <el-button @click="cancelForm">取 消</el-button>
+                <el-button type="primary" @click="handleSubmitClick">確 定</el-button>
+              </div>
             </div>
             <div style="width: 50%;">
               <el-form-item label="標題">
@@ -114,10 +118,6 @@
             </div>
           </div>
         </el-form>
-        <div style="margin-top: 10px;">
-          <el-button @click="cancelForm">取 消</el-button>
-          <el-button type="primary" @click="handleSubmitClick">確 定</el-button>
-        </div>
       </div>
     </el-drawer>
   </div>
