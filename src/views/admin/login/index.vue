@@ -22,14 +22,22 @@
             <div id="loginPanel" class="LogInUI-contenter">
               <div id="slideUIFrameLogin" class="slide-frame">
                 <div class="LogInUI-contenter-title">
-                  <div> 登入</div>
+                  <div>登入</div>
                 </div>
                 <div class="LogInUI-contenter-section">
-                  <div> Email:</div>
-                  <input v-model="email" type="text">
+                  <div>
+                    <label for="email">
+                      Email:
+                    </label>
+                  </div>
+                  <input id="email" v-model="email" type="email">
                   <br>
-                  <div>Passowrd:</div>
-                  <input v-model="password" type="password" @keydown.enter="handleLoginClick">
+                  <div>
+                    <label for="password">
+                      Passowrd:
+                    </label>
+                  </div>
+                  <input id="password" v-model="password" type="password" @keydown.enter="handleLoginClick">
                   <br>
                   <br>
                   <button type="button" @click="handleLoginClick">Log in</button>
