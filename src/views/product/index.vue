@@ -1,7 +1,7 @@
 <template>
   <section
     v-loading.fullscreen.lock="loading"
-    element-loading-text="資料載入中"
+    :element-loading-text="loadingText"
     element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.8)"
     class="shop-area section-padding-0-100"
@@ -9,13 +9,18 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <div class="shop-filters mb-30 d-flex align-items-center justify-content-between">
-            <div class="product-show pt-30">
+          <div class="shop-filters mb-30 d-flex align-items-center justify-content-between pt-2">
+            <div>
               <h6>Showing {{ startRow + 1 }}–{{ endRow }} of {{ filtered.length }} results</h6>
             </div>
             <div>
-              <button type="button" class="btn btn-info">
-                <svg-icon icon-class="shopping-cart" />購物車
+              <button type="button" class="btn btn-info" @click="showCart = !showCart">
+                <svg-icon icon-class="shopping-cart" class="mr-1" />
+                購物車
+                <span
+                  v-if="cartDataList.length>0"
+                  class="badge badge-pill badge-danger"
+                >{{ cartDataList.length }}</span>
               </button>
             </div>
           </div>
@@ -28,7 +33,8 @@
             <h5 class="widget-title">Catagories</h5>
             <ul class="cata-list shop-page">
               <li v-for="(value, key) of categories" :key="key">
-                <a style="cursor: pointer;text-decoration: underline;" @click="changeCategory(key)">{{ key }} ({{ value.results }})</a>
+                <a style="cursor: pointer;text-decoration: underline;" @click="changeCategory(key)">{{ key }} ({{
+                  value.results }})</a>
               </li>
             </ul>
           </div>
@@ -41,10 +47,9 @@
                   <img :src="product.imageUrl[0]" alt="">
                   <!--                <span class="product-tags">Hot</span>-->
                   <div class="product-meta-data">
-                    <!--                  <a href="#" data-toggle="tooltip" data-placement="top" title="Favourite"><i-->
-                    <!--                          class="icon_heart_alt"></i></a>-->
-                    <!--                  <a href="#" data-toggle="tooltip" data-placement="top" title="Add To Cart"><i-->
-                    <!--                          class="icon_cart_alt"></i></a>-->
+                    <a title="Add To Cart" @click="handleAddCart(product.id)">
+                      <svg-icon icon-class="shopping-cart-add" />
+                    </a>
                   </div>
                 </div>
                 <div class="product-desc text-center pt-4">
@@ -59,36 +64,50 @@
           </div>
           <nav>
             <ul class="pagination mb-0 mt-50">
-              <li v-for="(page, index) in pages" :key="index" class="page-item" :class="page === currentPage ? 'active' : ''">
+              <li
+                v-for="(page, index) in pages"
+                :key="index"
+                class="page-item"
+                :class="page === currentPage ? 'active' : ''"
+              >
                 <a class="page-link" @click="changePage(page)">{{ page }}</a>
               </li>
-              <!--            <li class="page-item active"><a class="page-link" href="#">1</a></li>-->
-              <!--            <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-              <!--            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-              <!--            <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>-->
             </ul>
           </nav>
         </div>
       </div>
     </div>
+    <cart v-model="showCart" />
   </section>
 </template>
 
 <script>
-import { getProducts } from '@/assets/api/hexschool'
+import { getProducts, shopping } from '@/assets/api/hexschool'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
 
 const CATEGORY_ALL = 'All products'
+const LOADING_TEXT = {
+  loading: '資料載入中',
+  joinCart: '加入購物車中'
+}
 export default {
+  components: {
+    Cart: () => import('@/components/Product/Cart')
+  },
   data () {
     return {
       loading: false,
+      loadingText: LOADING_TEXT.loading,
       products: [],
       filteredProducts: [],
       categories: {},
       pageRow: 18,
       currentPage: 1,
       category: '',
-      pagination: {}
+      pagination: {},
+      showCart: false,
+      cartDataList: []
     }
   },
   computed: {
@@ -129,6 +148,7 @@ export default {
     }
   },
   created () {
+    this.loadingText = LOADING_TEXT.loading
     this.loading = true
     this.fetchProducts(1).then(() => {
       const total_pages = this.pagination.total_pages
@@ -139,6 +159,7 @@ export default {
     }).finally(() => {
       this.loading = false
     })
+    this.periodCart()
   },
   methods: {
     fetchProducts: function (currentPage) {
@@ -174,10 +195,41 @@ export default {
     changeCategory (category) {
       this.category = category
       this.currentPage = 1
+    },
+    handleAddCart (productId) {
+      this.loadingText = LOADING_TEXT.joinCart
+      this.loading = true
+      shopping.postCart({
+        product: productId,
+        quantity: 1
+      }).then(result => {
+        this.cartDataList.push(result)
+        Swal.fire('Good job', '加入購物車成功', 'success')
+      }).catch(error => {
+        Swal.fire('Oops...', error.errors[0], 'error')
+      })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    periodCart () {
+      shopping.getCart()
+        .then(result => {
+          this.cartDataList = result.data
+          return Promise.resolve()
+        }).then(() => {
+          setTimeout(() => {
+            this.periodCart()
+          }, 1000)
+        })
     }
   }
 }
 </script>
-
-<style scoped src="../../assets/project/assets/style.css">
+<style scoped src="../../assets/css/style.css">
+</style>
+<style scoped>
+  a:hover {
+    cursor: pointer;
+  }
 </style>

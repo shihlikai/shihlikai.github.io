@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import { checkAccessToken } from '@/assets/utils'
+const { name } = require('@/app.config')
 
 // const originalPush = Router.prototype.push
 // Router.prototype.push = function push (location) {
@@ -19,6 +20,9 @@ const router = new Router({
     },
     {
       path: '/product',
+      meta: {
+        title: '商品列表'
+      },
       component: () => import('@/views/product/index')
     },
     {
@@ -51,6 +55,8 @@ const router = new Router({
   ]
 })
 router.beforeEach((to, from, next) => {
+  document.title = (to.meta || {}).title || name
+
   if (checkAccessToken()) {
     if (isAdminLoginPath()) {
       next('/admin/product')

@@ -91,3 +91,30 @@ export function postAdminLogin (body) {
       })
   })
 }
+
+export const shopping = {
+  getCart () {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.get(`${authorityUrl}/ec/shopping`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  postCart (body) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.post(`${authorityUrl}/ec/shopping`, body, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error.response.data)
+        })
+    })
+  }
+}
