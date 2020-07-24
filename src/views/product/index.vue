@@ -4,7 +4,7 @@
     :element-loading-text="loadingText"
     element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.8)"
-    class="shop-area section-padding-0-100"
+    class="shop-area section-padding-0-100 bg-white"
   >
     <div class="container">
       <div class="row">
@@ -14,7 +14,12 @@
               <h6>Showing {{ startRow + 1 }}–{{ endRow }} of {{ filtered.length }} results</h6>
             </div>
             <div>
-              <button type="button" class="btn btn-info" @click="showCart = !showCart">
+              <button
+                :disabled="cartDataList.length===0"
+                type="button"
+                class="btn btn-info"
+                @click="showCart = !showCart"
+              >
                 <svg-icon icon-class="shopping-cart" class="mr-1" />
                 購物車
                 <span
@@ -26,7 +31,6 @@
           </div>
         </div>
       </div>
-
       <div class="row">
         <div class="col-12 col-md-4 col-lg-3">
           <div class="single-widget-area">
@@ -55,8 +59,8 @@
                 <div class="product-desc text-center pt-4">
                   <a href="#" class="product-title">{{ product.title }}</a>
                   <h6 class="price">
-                    ${{ product.price }}
-                    <span class="text-danger">${{ product.origin_price }}</span>
+                    {{ product.price | money }}
+                    <span class="text-danger">{{ product.origin_price | money }}</span>
                   </h6>
                 </div>
               </div>
@@ -91,6 +95,7 @@ const LOADING_TEXT = {
   loading: '資料載入中',
   joinCart: '加入購物車中'
 }
+
 export default {
   components: {
     Cart: () => import('@/components/Product/Cart')
@@ -199,10 +204,7 @@ export default {
     handleAddCart (productId) {
       this.loadingText = LOADING_TEXT.joinCart
       this.loading = true
-      shopping.postCart({
-        product: productId,
-        quantity: 1
-      }).then(result => {
+      shopping.postCart(productId, 1).then(result => {
         this.cartDataList.push(result)
         Swal.fire('Good job', '加入購物車成功', 'success')
       }).catch(error => {

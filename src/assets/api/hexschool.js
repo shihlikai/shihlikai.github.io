@@ -105,15 +105,51 @@ export const shopping = {
         })
     })
   },
-  postCart (body) {
+  postCart (product, quantity) {
     return new Promise((resolve, reject) => {
       const { authorityUrl, config } = getInfo()
-      axios.post(`${authorityUrl}/ec/shopping`, body, config)
+      axios.post(`${authorityUrl}/ec/shopping`, { product, quantity }, config)
         .then(res => {
           resolve(res.data)
         })
         .catch(error => {
           reject(error.response.data)
+        })
+    })
+  },
+  patchCart (product, quantity) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.patch(`${authorityUrl}/ec/shopping`, { product, quantity }, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error.response.data)
+        })
+    })
+  },
+  deleteCart (product) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.delete(`${authorityUrl}/ec/shopping/${product}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  deleteAllCart () {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.delete(`${authorityUrl}/ec/shopping/all/product`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
         })
     })
   }
