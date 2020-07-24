@@ -1,13 +1,183 @@
 <template>
-  <iframe src="/hexshool/20200626" />
+  <section
+    v-loading.fullscreen.lock="loading"
+    element-loading-text="資料載入中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+    class="shop-area section-padding-0-100"
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="shop-filters mb-30 d-flex align-items-center justify-content-between">
+            <div class="product-show pt-30">
+              <h6>Showing {{ startRow + 1 }}–{{ endRow }} of {{ filtered.length }} results</h6>
+            </div>
+            <div>
+              <button type="button" class="btn btn-info">
+                <svg-icon icon-class="shopping-cart" />購物車
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-md-4 col-lg-3">
+          <div class="single-widget-area">
+            <h5 class="widget-title">Catagories</h5>
+            <ul class="cata-list shop-page">
+              <li v-for="(value, key) of categories" :key="key">
+                <a style="cursor: pointer;text-decoration: underline;" @click="changeCategory(key)">{{ key }} ({{ value.results }})</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12 col-md-8 col-lg-9">
+          <div id="products" class="row">
+            <div v-for="(product, index) in pager" :key="index" class="col-12 col-sm-6 col-lg-4">
+              <div class="single-product-area mb-50">
+                <div class="product-thumbnail">
+                  <img :src="product.imageUrl[0]" alt="">
+                  <!--                <span class="product-tags">Hot</span>-->
+                  <div class="product-meta-data">
+                    <!--                  <a href="#" data-toggle="tooltip" data-placement="top" title="Favourite"><i-->
+                    <!--                          class="icon_heart_alt"></i></a>-->
+                    <!--                  <a href="#" data-toggle="tooltip" data-placement="top" title="Add To Cart"><i-->
+                    <!--                          class="icon_cart_alt"></i></a>-->
+                  </div>
+                </div>
+                <div class="product-desc text-center pt-4">
+                  <a href="#" class="product-title">{{ product.title }}</a>
+                  <h6 class="price">
+                    ${{ product.price }}
+                    <span class="text-danger">${{ product.origin_price }}</span>
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <nav>
+            <ul class="pagination mb-0 mt-50">
+              <li v-for="(page, index) in pages" :key="index" class="page-item" :class="page === currentPage ? 'active' : ''">
+                <a class="page-link" @click="changePage(page)">{{ page }}</a>
+              </li>
+              <!--            <li class="page-item active"><a class="page-link" href="#">1</a></li>-->
+              <!--            <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+              <!--            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+              <!--            <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>-->
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
-export default {
+import { getProducts } from '@/assets/api/hexschool'
 
+const CATEGORY_ALL = 'All products'
+export default {
+  data () {
+    return {
+      loading: false,
+      products: [],
+      filteredProducts: [],
+      categories: {},
+      pageRow: 18,
+      currentPage: 1,
+      category: '',
+      pagination: {}
+    }
+  },
+  computed: {
+    filtered () {
+      const vm = this
+      if (vm.category && vm.category !== CATEGORY_ALL) {
+        return vm.products.filter(product => product.category === vm.category)
+      }
+      return vm.products
+    },
+    calculatorPagination () {
+      const total = this.filtered.length
+      const startRow = (this.currentPage - 1) * this.pageRow
+      let endRow = startRow + this.pageRow
+      if (endRow > total) {
+        endRow = total
+      }
+
+      let pages = parseInt(total / this.pageRow)
+      if (total % this.pageRow !== 0) {
+        pages++
+      }
+      return {
+        pages, startRow, endRow
+      }
+    },
+    pages () {
+      return this.calculatorPagination.pages
+    },
+    startRow () {
+      return this.calculatorPagination.startRow
+    },
+    endRow () {
+      return this.calculatorPagination.endRow
+    },
+    pager () {
+      return this.filtered.slice(this.startRow, this.endRow)
+    }
+  },
+  created () {
+    this.loading = true
+    this.fetchProducts(1).then(() => {
+      const total_pages = this.pagination.total_pages
+      return Promise.all(Array.from(Array(total_pages), (_, index) => index + 1).slice(1).map(page => this.fetchProducts(page)))
+    }).then(() => {
+      this.assort()
+      // this.render()
+    }).finally(() => {
+      this.loading = false
+    })
+  },
+  methods: {
+    fetchProducts: function (currentPage) {
+      const vm = this
+      return getProducts(currentPage).then(products => {
+        if (products.data.length > 0) {
+          vm.products.push(...products.data)
+          vm.pagination = products.meta.pagination
+        }
+        return Promise.resolve()
+      })
+    },
+    assort: function () {
+      const categories = {
+        [CATEGORY_ALL]: {
+          results: this.products.length
+        }
+      }
+      this.products.forEach(product => {
+        if (categories[product.category]) {
+          categories[product.category].results += 1
+        } else {
+          categories[product.category] = {
+            results: 1
+          }
+        }
+      })
+      this.categories = categories
+    },
+    changePage (page) {
+      this.currentPage = page
+    },
+    changeCategory (category) {
+      this.category = category
+      this.currentPage = 1
+    }
+  }
 }
 </script>
 
-<style scoped>
-
+<style scoped src="../../assets/project/assets/style.css">
 </style>
