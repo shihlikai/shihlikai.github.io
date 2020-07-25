@@ -47,13 +47,13 @@
                     <td class="align-middle text-center">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text cursor-pointer" @click="handelQuantityPlus(cart)">
+                          <span class="input-group-text cursor-pointer" @click="handelQuantityPlus($event, cart)">
                             <svg-icon icon-class="plus" />
                           </span>
                         </div>
                         <input type="number" class="form-control text-center" :value="cart.quantity">
                         <div class="input-group-prepend">
-                          <span class="input-group-text cursor-pointer" @click="handelQuantityMinus(cart)">
+                          <span class="input-group-text cursor-pointer" @click="handelQuantityMinus($event, cart)">
                             <svg-icon icon-class="minus" />
                           </span>
                         </div>
@@ -215,17 +215,33 @@ export default {
     handleSubmit () {
       Swal.fire('', '訂單送出完成', 'success')
     },
-    handelQuantityPlus (cart) {
-      cart.quantity = cart.quantity + 1
-      this.updateCart(cart)
+    handelQuantityPlus ($event, cart) {
+      if ($event.target.getAttribute('isLocked')) {
+        return
+      }
+
+      $event.target.setAttribute('isLocked', true)
+      const originQuantity = cart.quantity
+      this.updateCart(cart.product.id, originQuantity + 1, () => {
+        $event.target.removeAttribute('isLocked')
+        cart.quantity = originQuantity + 1
+      })
     },
-    handelQuantityMinus (cart) {
+    handelQuantityMinus ($event, cart) {
       if (cart.quantity === 1) {
         return
       }
 
-      cart.quantity = cart.quantity - 1
-      this.updateCart(cart)
+      if ($event.target.getAttribute('isLocked')) {
+        return
+      }
+
+      $event.target.setAttribute('isLocked', true)
+      const originQuantity = cart.quantity
+      this.updateCart(cart.product.id, originQuantity - 1, () => {
+        $event.target.removeAttribute('isLocked')
+        cart.quantity = originQuantity - 1
+      })
     },
     getCart () {
       this.loading = true
@@ -235,12 +251,15 @@ export default {
         this.loading = false
       })
     },
-    updateCart (cart) {
+    updateCart (productId, quantity, complateHandle) {
       this.loading = true
-      shopping.patchCart(cart.product.id, cart.quantity)
+      shopping.patchCart(productId, quantity)
         .then(() => {
           this.getCart()
+        }).catch(error => {
+          Swal.fire('', error.errors[0], 'error')
         }).finally(() => {
+          complateHandle()
           this.loading = false
         })
     },
