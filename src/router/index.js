@@ -15,7 +15,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/admin',
+      redirect: '/product',
       component: () => import('@/layouts/index')
     },
     {
