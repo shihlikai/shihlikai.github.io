@@ -82,14 +82,14 @@
               tag="form"
               @submit.prevent="handleSubmit"
             >
-              <ValidationProvider v-slot="{ errors }" name="recipient" rules="required">
+              <ValidationProvider v-slot="{ errors }" name="收件人姓名" rules="required">
                 <div class="form-group required">
                   <label for="recipient">收件人姓名</label>
                   <input id="recipient" v-model="form.recipient" type="text" class="form-control" autocomplete="off">
                   <p class="text-danger">{{ errors[0] }}</p>
                 </div>
               </ValidationProvider>
-              <ValidationProvider v-slot="{ errors }" name="email" rules="required|email">
+              <ValidationProvider v-slot="{ errors }" name="Email" rules="required|email">
                 <div class="form-group required">
                   <label for="email">Email</label>
                   <input id="email" v-model="form.email" type="email" class="form-control" autocomplete="off">
@@ -98,44 +98,29 @@
               </ValidationProvider>
               <ValidationProvider
                 v-slot="{ errors }"
-                name="phone"
+                name="手機號碼"
                 :rules="{ required: true, regex:/^((?=(09))[0-9]{10})$/ }"
               >
                 <div class="form-group required">
-                  <label for="phone">電話</label>
+                  <label for="phone">手機號碼</label>
                   <input id="phone" v-model="form.phone" type="tel" class="form-control" autocomplete="off">
                   <p class="text-danger">{{ errors[0] }}</p>
                 </div>
               </ValidationProvider>
-              <ValidationProvider v-slot="{ errors }" name="address" rules="required">
+              <ValidationProvider v-slot="{ errors }" name="地址" rules="required">
                 <div class="form-group required">
                   <label for="address">地址</label>
                   <input id="address" v-model="form.address" type="text" class="form-control" autocomplete="off">
                   <p class="text-danger">{{ errors[0] }}</p>
                 </div>
               </ValidationProvider>
-              <ValidationProvider v-slot="{ errors }" name="payment" rules="required">
+              <ValidationProvider v-slot="{ errors }" name="付款方式" rules="required">
                 <div class="form-group required">
                   <label>付款方式</label>
                   <div>
                     <div class="btn-group btn-group-toggle">
-                      <label class="btn btn-outline-dark" :class="form.payment === 'WebATM' ? 'active':''">
-                        <input v-model="form.payment" type="radio" value="WebATM" autocomplete="off"> WebATM
-                      </label>
-                      <label class="btn btn-outline-dark" :class="form.payment === 'ATM' ? 'active':''">
-                        <input v-model="form.payment" type="radio" value="ATM" autocomplete="off"> ATM
-                      </label>
-                      <label class="btn btn-outline-dark" :class="form.payment === 'Barcode' ? 'active':''">
-                        <input v-model="form.payment" type="radio" value="Barcode" autocomplete="off"> Barcode
-                      </label>
-                      <label class="btn btn-outline-dark" :class="form.payment === 'Credit' ? 'active':''">
-                        <input v-model="form.payment" type="radio" value="Credit" autocomplete="off"> Credit
-                      </label>
-                      <label class="btn btn-outline-dark" :class="form.payment === 'ApplePay' ? 'active':''">
-                        <input v-model="form.payment" type="radio" value="ApplePay" autocomplete="off"> ApplePay
-                      </label>
-                      <label class="btn btn-outline-dark" :class="form.payment === 'GooglePay' ? 'active':''">
-                        <input v-model="form.payment" type="radio" value="GooglePay" autocomplete="off"> GooglePay
+                      <label v-for="(payment) in payments" :key="payment" class="btn btn-outline-dark" :class="form.payment === payment ? 'active':''">
+                        <input v-model="form.payment" type="radio" :value="payment" autocomplete="off"> {{ payment }}
                       </label>
                     </div>
                     <p class="text-danger">{{ errors[0] }}</p>
@@ -147,7 +132,7 @@
                 <textarea id="message" class="form-control" rows="5" autocomplete="off" />
               </div>
               <div class="form-group text-right">
-                <button :disabled="invalid" type="submit" class="btn btn-primary">送出訂單</button>
+                <button :disabled="cartDataList.length === 0 || invalid" type="submit" class="btn btn-primary">送出訂單</button>
               </div>
             </ValidationObserver>
           </div>
@@ -160,10 +145,13 @@
 <script>
 import $ from 'jquery'
 import 'bootstrap/dist/js/bootstrap.bundle.js'
-import { ValidationProvider, ValidationObserver } from 'vee-validate/dist/vee-validate.full'
+import { ValidationProvider, ValidationObserver, localize } from 'vee-validate/dist/vee-validate.full'
+import LOCALE_TW from 'vee-validate/dist/locale/zh_TW.json'
+
 import { shopping } from '@/assets/api/hexschool'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
+localize('zh_TW', LOCALE_TW)
 export default {
   name: 'Cart',
   components: {
@@ -186,7 +174,10 @@ export default {
         payment: null
       },
       cartDataList: [],
-      loading: false
+      loading: false,
+      payments: [
+        'WebATM', 'ATM', 'Barcode', 'Credit', 'ApplePay', 'GooglePay'
+      ]
     }
   },
   computed: {

@@ -57,18 +57,22 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   document.title = (to.meta || {}).title || name
 
-  if (checkAccessToken()) {
-    if (isAdminLoginPath()) {
-      next('/admin/product')
+  if (to.path.startsWith('/admin')) {
+    if (checkAccessToken()) {
+      if (isAdminLoginPath()) {
+        next('/admin/product')
+      } else {
+        next()
+      }
     } else {
-      next()
+      if (isAdminLoginPath()) {
+        next()
+      } else {
+        next('/admin/login')
+      }
     }
   } else {
-    if (isAdminLoginPath()) {
-      next()
-    } else {
-      next('/admin/login')
-    }
+    next()
   }
 
   function isAdminLoginPath () {

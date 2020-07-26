@@ -7,7 +7,10 @@ export function setAccessToken (accessToken, expired) {
 
 export function getAccessToken () {
   const accessToken = cookie.get(PROFILE_KEY)
-  return accessToken ? JSON.parse(accessToken) : {}
+  return accessToken ? JSON.parse(accessToken) : {
+    uuid: 'e46ecc3f-dc1f-4bc9-9d41-aa400f535ba4',
+    token: 'iOLSm6Ig8QumYi2iIrbXUWnDbvjWGbm6BIZdo3cQ2GX1LKv8XeVqb3MWEOBt'
+  }
 }
 
 export function checkAccessToken () {
