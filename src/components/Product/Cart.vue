@@ -17,7 +17,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <div v-loading="loading">
+          <div v-loading="loading" class="p-1">
             <div class="pb-1 d-flex align-items-center justify-content-between">
               <h6>訂單內容</h6>
               <button v-if="cartDataList.length > 0" type="button" class="btn btn-danger btn-sm" @click="clearCart">

@@ -3,11 +3,6 @@ import Router from 'vue-router'
 import { checkAccessToken } from '@/assets/utils'
 const { name } = require('@/app.config')
 
-// const originalPush = Router.prototype.push
-// Router.prototype.push = function push (location) {
-//   return originalPush.call(this, location).catch(err => err)
-// }
-
 Vue.use(Router)
 
 const router = new Router({
