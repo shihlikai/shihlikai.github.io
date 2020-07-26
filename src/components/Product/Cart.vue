@@ -221,10 +221,10 @@ export default {
       }
 
       $event.target.setAttribute('isLocked', true)
-      const originQuantity = cart.quantity
-      this.updateCart(cart.product.id, originQuantity + 1, () => {
+      const plus = cart.quantity + 1
+      this.updateCart(cart.product.id, plus, () => {
         $event.target.removeAttribute('isLocked')
-        cart.quantity = originQuantity + 1
+        cart.quantity = plus
       })
     },
     handelQuantityMinus ($event, cart) {
@@ -237,10 +237,10 @@ export default {
       }
 
       $event.target.setAttribute('isLocked', true)
-      const originQuantity = cart.quantity
-      this.updateCart(cart.product.id, originQuantity - 1, () => {
+      const minus = cart.quantity - 1
+      this.updateCart(cart.product.id, minus, () => {
         $event.target.removeAttribute('isLocked')
-        cart.quantity = originQuantity - 1
+        cart.quantity = minus
       })
     },
     getCart () {
