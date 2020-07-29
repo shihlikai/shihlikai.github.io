@@ -1,3 +1,3 @@
 module.exports = {
-  name: '後台管理平台'
+  name: '無毒有機草生農場'
 }

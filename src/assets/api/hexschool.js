@@ -4,7 +4,13 @@ import axios from 'axios'
 const baseUrl = `https://course-ec-api.hexschool.io/api/`
 
 function getInfo () {
-  const accessToken = getAccessToken()
+  let accessToken = getAccessToken()
+  if (Object.keys(accessToken).length === 0) {
+    accessToken = {
+      uuid: 'e46ecc3f-dc1f-4bc9-9d41-aa400f535ba4',
+      token: 'iOLSm6Ig8QumYi2iIrbXUWnDbvjWGbm6BIZdo3cQ2GX1LKv8XeVqb3MWEOBt'
+    }
+  }
   return {
     authorityUrl: `${baseUrl}${accessToken.uuid}`,
     config: {

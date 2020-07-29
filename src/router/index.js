@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import { checkAccessToken } from '@/assets/utils'
+
 const { name } = require('@/app.config')
 
 Vue.use(Router)
@@ -27,7 +28,7 @@ const router = new Router({
         {
           path: 'login',
           meta: {
-            name: '登入'
+            title: '登入'
           },
           component: () => import('@/views/admin/login')
         },
@@ -39,7 +40,7 @@ const router = new Router({
             {
               path: 'product',
               meta: {
-                name: '商品列表'
+                title: '商品列表'
               },
               component: () => import('@/views/admin/product')
             }
@@ -50,9 +51,9 @@ const router = new Router({
   ]
 })
 router.beforeEach((to, from, next) => {
-  document.title = (to.meta || {}).title || name
-
+  let suffix = name
   if (to.path.startsWith('/admin')) {
+    suffix = '後台管理平台'
     if (checkAccessToken()) {
       if (isAdminLoginPath()) {
         next('/admin/product')
@@ -69,6 +70,8 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+
+  document.title = `${(to.meta || {}).title || ''} - ${suffix}`
 
   function isAdminLoginPath () {
     return to.path === '/admin/login'

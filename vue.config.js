@@ -7,12 +7,23 @@ function resolve (dir) {
 
 module.exports = {
   publicPath: './',
+  // pages: {
+  //   index: {
+  //     entry: 'src/main.js',
+  //     template: 'public/index.html',
+  //     title: `${app.name}`,
+  //     filename: 'index.html',
+  //     chunks: ['chunk-vendors', 'chunk-common', 'index']
+  //   },
+  //   admin: {
+  //     entry: 'src/main.js',
+  //     template: 'public/index.html',
+  //     title: `後台管理平台 - (${app.name})`,
+  //     filename: 'admin.html',
+  //     chunks: ['chunk-vendors', 'chunk-common', 'admin']
+  //   }
+  // },
   chainWebpack: config => {
-    config.plugin('html')
-      .tap(args => {
-        args[0].title = app.name
-        return args
-      })
     // 先刪除預設的svg配置
     config.module.rules.delete('svg')
 
