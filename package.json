@@ -26,8 +26,10 @@
     "@vue/cli-plugin-vuex": "~4.4.0",
     "@vue/cli-service": "~4.4.0",
     "@vue/eslint-config-standard": "^5.1.2",
+    "animate.css": "^4.1.0",
     "babel-eslint": "^10.1.0",
     "bootstrap": "^4.5.0",
+    "chart.js": "^2.9.3",
     "eslint": "^7.4.0",
     "eslint-plugin-html": "^6.0.2",
     "eslint-plugin-import": "^2.20.2",
@@ -36,12 +38,16 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
     "jquery": "^3.5.1",
+    "jquery-sticky": "^1.0.4",
     "mdbootstrap": "^4.19.1",
+    "mdbvue": "^6.7.1",
     "node-sass": "^4.12.0",
+    "owl.carousel": "^2.3.4",
     "sass-loader": "^8.0.2",
     "svg-sprite-loader": "^5.0.0",
     "sweetalert2": "^9.17.0",
     "vee-validate": "^3.3.7",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "wow.js": "^1.2.2"
   }
 }

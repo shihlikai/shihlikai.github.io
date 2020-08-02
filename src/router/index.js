@@ -11,19 +11,32 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/product',
-      component: () => import('@/layouts/index')
+      redirect: '/home',
+      component: () => import('@/layouts/empty/index')
+    },
+    {
+      path: '/home',
+      component: () => import('@/layouts/home/index'),
+      children: [
+        {
+          path: '',
+          meta: {
+            title: '首頁'
+          },
+          component: () => import('@/views/home')
+        }
+      ]
     },
     {
       path: '/product',
       meta: {
         title: '商品列表'
       },
-      component: () => import('@/views/product/index')
+      component: () => import('@/views/product')
     },
     {
       path: '/admin',
-      component: () => import('@/layouts/admin'),
+      component: () => import('@/layouts/empty/index'),
       children: [
         {
           path: 'login',
@@ -35,7 +48,7 @@ const router = new Router({
         {
           path: '/',
           redirect: 'product',
-          component: () => import('@/layouts/index'),
+          component: () => import('@/layouts/admin/index'),
           children: [
             {
               path: 'product',
