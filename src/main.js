@@ -21,6 +21,10 @@ import 'owl.carousel/dist/assets/owl.carousel.css'
 import 'owl.carousel/dist/assets/owl.theme.default.css'
 import 'owl.carousel'
 
+import 'jquery-sticky'
+
+import '@/assets/css/style.css'
+
 import * as mdbvue from 'mdbvue'
 
 for (const component in mdbvue) {
