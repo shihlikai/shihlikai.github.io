@@ -36,6 +36,12 @@ Vue.filter('money', function (value) {
   return `$${value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`
 })
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faHome, faAngleRight, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+library.add(faHome, faAngleRight, faShoppingCart)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
 Vue.config.productionTip = false
 new Vue({
   router,

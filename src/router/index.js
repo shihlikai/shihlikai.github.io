@@ -24,15 +24,22 @@ const router = new Router({
             title: '首頁'
           },
           component: () => import('@/views/home')
+        },
+        {
+          path: '/shop',
+          meta: {
+            title: '商品列表'
+          },
+          component: () => import('@/views/shop')
+        },
+        {
+          path: '/shop/cart',
+          meta: {
+            title: '購物車列表'
+          },
+          component: () => import('@/views/shop/cart')
         }
       ]
-    },
-    {
-      path: '/product',
-      meta: {
-        title: '商品列表'
-      },
-      component: () => import('@/views/product')
     },
     {
       path: '/admin',

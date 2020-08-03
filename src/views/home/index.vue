@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="">
     <!-- ##### Hero Area Start ##### -->
     <div class="hero-area">
       <div class="welcome-slides owl-carousel owl-theme">
@@ -102,10 +102,115 @@
       </div>
     </section>
     <!-- ##### Famie Benefits Area End ##### -->
+
+    <!-- ##### About Us Area Start ##### -->
+    <section class="about-us-area">
+      <div class="container">
+        <div class="row align-items-center">
+
+          <!-- About Us Content -->
+          <div class="col-12 col-md-8">
+            <div class="about-us-content mb-100">
+              <!-- Section Heading -->
+              <div class="section-heading">
+                <p>About us</p>
+                <h2><span>Let Us</span> Tell You Our Story</h2>
+                <img src="img/core-img/decor.png" alt="">
+              </div>
+              <p>Lorem ipsum dolor sit amet, consectetu adipiscing elit. Etiam nunc elit, pretium atlanta urna veloci, fermentum malesuda mina. Donec auctor nislec neque sagittis, sit amet dapibus pellentesque donal feugiat. Nulla mollis magna non
+                sanaliquet, volutpat do zutum, ultrices consectetur, ultrices at purus.</p>
+              <a href="#" class="btn famie-btn mt-30">Read More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ##### About Us Area End ##### -->
+
+    <!-- ##### Services Area Start ##### -->
+    <section class="services-area d-flex flex-wrap">
+      <!-- Service Thumbnail -->
+      <div class="services-thumbnail bg-img jarallax" style="background-image: url('img/bg-img/7.jpg');" />
+
+      <!-- Service Content -->
+      <div class="services-content section-padding-100-50 px-5">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <!-- Section Heading -->
+              <div class="section-heading">
+                <p>What we do</p>
+                <h2><span>Our Produce</span> Is Mainstay For Us</h2>
+                <img src="img/core-img/decor.png" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 mb-50">
+              <p>Mauris fermentum nunc quis massa lacinia consequat. Suspendisse orci magna, pharetra sedonia risus ut,
+                elementum mollis nisin. Nunc in sapien turpis. Donec egeto david orci pulvinar ultrices necto drax turpis.
+                Pellentesque justo metus, semper nec ullamcorper id, gravida ultricies arcu.</p>
+            </div>
+
+            <!-- Single Service Area -->
+            <div class="col-12 col-lg-6">
+              <div class="single-service-area mb-50 wow fadeInUp" data-wow-delay="100ms">
+                <!-- Service Title -->
+                <div class="service-title mb-3 d-flex align-items-center">
+                  <img src="img/core-img/s1.png" alt="">
+                  <h5>Fruit &amp; Vegetable</h5>
+                </div>
+                <p>Intiam eu sagittis est, aster cosmo lacini libero. Praesent dignissim sed odio velo aliquam manta legolas. </p>
+              </div>
+            </div>
+
+            <!-- Single Service Area -->
+            <div class="col-12 col-lg-6">
+              <div class="single-service-area mb-50 wow fadeInUp" data-wow-delay="300ms">
+                <!-- Service Title -->
+                <div class="service-title mb-3 d-flex align-items-center">
+                  <img src="img/core-img/s2.png" alt="">
+                  <h5>Meat &amp; Eggs</h5>
+                </div>
+                <p>Intiam eu sagittis est, aster cosmo lacini libero. Praesent dignissim sed odio velo aliquam manta legolas. </p>
+              </div>
+            </div>
+
+            <!-- Single Service Area -->
+            <div class="col-12 col-lg-6">
+              <div class="single-service-area mb-50 wow fadeInUp" data-wow-delay="500ms">
+                <!-- Service Title -->
+                <div class="service-title mb-3 d-flex align-items-center">
+                  <img src="img/core-img/s3.png" alt="">
+                  <h5>Milk &amp; Cheese</h5>
+                </div>
+                <p>Intiam eu sagittis est, aster cosmo lacini libero. Praesent dignissim sed odio velo aliquam manta legolas. </p>
+              </div>
+            </div>
+
+            <!-- Single Service Area -->
+            <div class="col-12 col-lg-6">
+              <div class="single-service-area mb-50 wow fadeInUp" data-wow-delay="700ms">
+                <!-- Service Title -->
+                <div class="service-title mb-3 d-flex align-items-center">
+                  <img src="img/core-img/s4.png" alt="">
+                  <h5>Rice &amp; Corn</h5>
+                </div>
+                <p>Intiam eu sagittis est, aster cosmo lacini libero. Praesent dignissim sed odio velo aliquam manta legolas. </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ##### Services Area End ##### -->
   </div>
 </template>
 
 <script>
+import $ from 'jquery'
 import '@/assets/css/style.css'
 export default {
   data () {
@@ -121,7 +226,42 @@ export default {
     }
   },
   mounted () {
-    require('@/assets/js/active')
+    const welcomeSlide = $('.welcome-slides')
+    welcomeSlide.owlCarousel({
+      items: 1,
+      margin: 0,
+      loop: true,
+      dots: false,
+      autoplay: true,
+      autoplayTimeout: 5000,
+      smartSpeed: 1000
+    })
+
+    welcomeSlide.on('translate.owl.carousel', function () {
+      const slideLayer = $('[data-animation]')
+      slideLayer.each(function () {
+        const anim_name = $(this).data('animation')
+        $(this).removeClass('animated ' + anim_name).css('opacity', '0')
+      })
+    })
+    welcomeSlide
+      .on('translated.owl.carousel', function () {
+        const slideLayer = welcomeSlide.find('.owl-item.active').find('[data-animation]')
+        slideLayer.each(function () {
+          const anim_name = $(this).data('animation')
+          $(this).addClass('animated ' + anim_name).css('opacity', '1')
+        })
+      })
+
+    $('[data-delay]').each(function () {
+      const anim_del = $(this).data('delay')
+      $(this).css('animation-delay', anim_del)
+    })
+
+    $('[data-duration]').each(function () {
+      const anim_dur = $(this).data('duration')
+      $(this).css('animation-duration', anim_dur)
+    })
   }
 }
 </script>

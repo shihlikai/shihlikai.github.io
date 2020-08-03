@@ -5,7 +5,7 @@
 /*@import '~bootstrap/dist/css/bootstrap.css';*/
 @import '~animate.css';
 /*@import 'classy-nav.css';*/
-/*@import 'font-awesome.min.css';*/
+@import 'font-awesome.min.css';
 /*@import "owl.carousel.min.css";*/
 
 * {
@@ -1825,12 +1825,14 @@ input:focus {
   border-color: #77b122;
   background-color: #77b122;
   color: #ffffff;
+  border-radius: 50%;
 }
 
 .pagination .page-item.active .page-link {
   border-color: #77b122;
   background-color: #77b122;
   color: #ffffff;
+  border-radius: 50%;
 }
 
 .comment_area {

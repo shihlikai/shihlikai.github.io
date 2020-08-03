@@ -3,20 +3,20 @@
 // ******************************************* //
 
 import jQuery from 'jquery'
-import WOW from 'wow.js'
+// import WOW from 'wow.js'
 
 (function ($) {
   'use strict'
 
   var browserWindow = $(window)
-  var welcomeSlide = $('.welcome-slides')
+
 
   // :: 1.0 Preloader Active Code
-  browserWindow.on('load', function () {
-    $('.preloader').fadeOut('slow', function () {
-      $(this).remove()
-    })
-  })
+  // browserWindow.on('load', function () {
+  //   $('.preloader').fadeOut('slow', function () {
+  //     $(this).remove()
+  //   })
+  // })
 
   // :: 2.0 Tooltip Active Code
   if ($.fn.tooltip) {
@@ -30,49 +30,11 @@ import WOW from 'wow.js'
 
   // :: 4.0 Sticky Active Code
   if ($.fn.sticky) {
-    $('.famie-main-menu').sticky({
-      topSpacing: 0
-    })
+
   }
 
   // :: 5.0 Sliders Active Code
   if ($.fn.owlCarousel) {
-    welcomeSlide.owlCarousel({
-      items: 1,
-      margin: 0,
-      loop: true,
-      dots: false,
-      autoplay: true,
-      autoplayTimeout: 5000,
-      smartSpeed: 1000
-    })
-
-    welcomeSlide.on('translate.owl.carousel', function () {
-      var slideLayer = $('[data-animation]')
-      slideLayer.each(function () {
-        var anim_name = $(this).data('animation')
-        $(this).removeClass('animated ' + anim_name).css('opacity', '0')
-      })
-    })
-    welcomeSlide
-      .on('translated.owl.carousel', function () {
-        var slideLayer = welcomeSlide.find('.owl-item.active').find('[data-animation]')
-        slideLayer.each(function () {
-          var anim_name = $(this).data('animation')
-          $(this).addClass('animated ' + anim_name).css('opacity', '1')
-        })
-      })
-
-    $('[data-delay]').each(function () {
-      var anim_del = $(this).data('delay')
-      $(this).css('animation-delay', anim_del)
-    })
-
-    $('[data-duration]').each(function () {
-      var anim_dur = $(this).data('duration')
-      $(this).css('animation-duration', anim_dur)
-    })
-
     // $('.testimonial-slides').owlCarousel({
     //   items: 1,
     //   margin: 0,
@@ -125,6 +87,6 @@ import WOW from 'wow.js'
 
   // :: 11.0 Wow Active Code
   if (browserWindow.width() > 767) {
-    new WOW().init()
+    // new WOW().init()
   }
 })(jQuery)
