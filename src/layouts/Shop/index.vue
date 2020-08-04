@@ -17,16 +17,16 @@
     </div>
     <div class="famie-breadcrumb">
       <div class="container">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-              <router-link to="/home">
-                <font-awesome-icon icon="home" /> Home
-              </router-link>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">Shop</li>
-          </ol>
-        </nav>
+        <mdb-breadcrumb>
+          <mdb-breadcrumb-item>
+            <router-link to="/home">
+              <font-awesome-icon icon="home" /> Home
+            </router-link>
+          </mdb-breadcrumb-item>
+          <mdb-breadcrumb-item>
+            <router-link to="/shop">Shop</router-link>
+          </mdb-breadcrumb-item>
+        </mdb-breadcrumb>
       </div>
     </div>
     <!-- ##### Breadcrumb Area End ##### -->

@@ -24,23 +24,33 @@ const router = new Router({
             title: '首頁'
           },
           component: () => import('@/views/home')
-        },
+        }
+      ]
+    },
+    {
+      path: '/shop',
+      component: () => import('@/layouts/home/index'),
+      redirect: '/shop/product',
+      children: [
         {
-          path: '/shop',
-          meta: {
-            title: '商品列表'
-          },
+          path: 'product',
           component: () => import('@/layouts/Shop'),
           children: [
             {
               path: '',
               meta: {
-                title: '購物車列表'
+                title: '商品列表'
               },
               component: () => import('@/views/shop')
-            },
+            }
+          ]
+        },
+        {
+          path: 'cart',
+          component: () => import('@/layouts/Shop'),
+          children: [
             {
-              path: 'cart',
+              path: '',
               meta: {
                 title: '購物車列表'
               },
@@ -49,6 +59,23 @@ const router = new Router({
           ]
         }
       ]
+      // component: () => import('@/layouts/Shop'),
+      // children: [
+      //   {
+      //     path: '',
+      //     meta: {
+      //       title: '購物車列表'
+      //     },
+      //     component: () => import('@/views/shop')
+      //   },
+      //   {
+      //     path: 'cart',
+      //     meta: {
+      //       title: '購物車列表'
+      //     },
+      //     component: () => import('@/views/shop/cart')
+      //   }
+      // ]
     },
     {
       path: '/admin',

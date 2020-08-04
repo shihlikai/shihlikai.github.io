@@ -1,10 +1,11 @@
 <template>
   <div class="container">
+    <h5 class="text-center">購物車</h5>
     <div v-loading="loading" class="p-1">
       <div class="pb-1 d-flex align-items-center justify-content-between">
         <h6>訂單內容</h6>
         <button v-if="cartDataList.length > 0" type="button" class="btn btn-danger btn-sm" @click="clearCart">
-          <svg-icon icon-class="trash" />
+          <font-awesome-icon icon="trash-alt" size="lg" />
           清空購物車
         </button>
       </div>
@@ -23,7 +24,7 @@
             <tr v-for="(cart, index) in cartDataList" :key="index">
               <td class="text-center align-middle">
                 <button type="button" class="btn btn-danger btn-sm" @click="deleteCart(cart)">
-                  <svg-icon icon-class="trash" />
+                  <font-awesome-icon icon="trash-alt" size="lg" />
                 </button>
               </td>
               <td class="align-middle">{{ cart.product.title }}</td>
@@ -102,7 +103,12 @@
             <label>付款方式</label>
             <div>
               <div class="btn-group btn-group-toggle">
-                <label v-for="(payment) in payments" :key="payment" class="btn btn-outline-dark" :class="form.payment === payment ? 'active':''">
+                <label
+                  v-for="(payment) in payments"
+                  :key="payment"
+                  class="btn btn-dark-green"
+                  :class="form.payment === payment ? 'active':''"
+                >
                   <input v-model="form.payment" type="radio" :value="payment" autocomplete="off"> {{ payment }}
                 </label>
               </div>
@@ -123,8 +129,12 @@
 </template>
 
 <script>
-import { ValidationObserver, ValidationProvider } from 'vee-validate/dist/vee-validate.full'
+import { ValidationObserver, ValidationProvider, localize } from 'vee-validate/dist/vee-validate.full'
+import LOCALE_TW from 'vee-validate/dist/locale/zh_TW.json'
+import { shopping } from '@/assets/api/hexschool'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
 
+localize('zh_TW', LOCALE_TW)
 export default {
   name: 'ShoppingCart',
   components: {
@@ -154,11 +164,106 @@ export default {
       }, 0)
     }
   },
+  created () {
+    this.getCart()
+  },
   mounted () {
+  },
+  methods: {
+    handleSubmit () {
+      Swal.fire('', '訂單送出完成', 'success')
+    },
+    handelQuantityPlus ($event, cart) {
+      if ($event.target.getAttribute('isLocked')) {
+        return
+      }
+
+      $event.target.setAttribute('isLocked', true)
+      const plus = cart.quantity + 1
+      this.updateCart(cart.product.id, plus, () => {
+        $event.target.removeAttribute('isLocked')
+        cart.quantity = plus
+      })
+    },
+    handelQuantityMinus ($event, cart) {
+      if (cart.quantity === 1) {
+        return
+      }
+
+      if ($event.target.getAttribute('isLocked')) {
+        return
+      }
+
+      $event.target.setAttribute('isLocked', true)
+      const minus = cart.quantity - 1
+      this.updateCart(cart.product.id, minus, () => {
+        $event.target.removeAttribute('isLocked')
+        cart.quantity = minus
+      })
+    },
+    getCart () {
+      this.loading = true
+      shopping.getCart().then(result => {
+        this.cartDataList = result.data
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    updateCart (productId, quantity, complateHandle) {
+      this.loading = true
+      shopping.patchCart(productId, quantity)
+        .then(() => {
+          this.getCart()
+        }).catch(error => {
+          Swal.fire('', error.errors[0], 'error')
+        }).finally(() => {
+          complateHandle()
+          this.loading = false
+        })
+    },
+    deleteCart (cart) {
+      this.loading = true
+      shopping.deleteCart(cart.product.id)
+        .then(() => {
+          this.getCart()
+        }).finally(() => {
+          this.loading = false
+        })
+    },
+    clearCart () {
+      this.loading = true
+      shopping.deleteAllCart()
+        .then(() => {
+          this.getCart()
+        }).finally(() => {
+          this.loading = false
+        })
+    }
   }
 }
 </script>
-
 <style scoped>
+/deep/ .el-loading-mask {
+  z-index: 0;
+}
+.form-group.required > label:before {
+  content: " * ";
+  color: red;
+}
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
 </style>

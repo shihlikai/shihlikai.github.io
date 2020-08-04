@@ -37,9 +37,9 @@ Vue.filter('money', function (value) {
 })
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faHome, faAngleRight, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faAngleRight, faShoppingCart, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-library.add(faHome, faAngleRight, faShoppingCart)
+library.add(faHome, faAngleRight, faShoppingCart, faTrashAlt)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
