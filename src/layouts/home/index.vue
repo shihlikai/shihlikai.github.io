@@ -54,7 +54,7 @@
                   </mdb-dropdown>
                 </mdb-navbar-nav>
                 <form class="mr-4">
-                  <cart-layout />
+                  <cart />
                 </form>
               </mdb-navbar-toggler>
             </mdb-navbar>
@@ -71,7 +71,7 @@ import $ from 'jquery'
 export default {
   components: {
     AppMain: () => import('@/layouts/home/components/AppMain'),
-    CartLayout: () => import('@/layouts/home/components/Cart')
+    Cart: () => import('@/layouts/home/components/Cart')
   },
   computed: {
     ...mapGetters({

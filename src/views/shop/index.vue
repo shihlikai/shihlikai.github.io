@@ -20,7 +20,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-              <router-link to="home">
+              <router-link to="/home">
                 <font-awesome-icon icon="home" /> Home
               </router-link>
             </li>

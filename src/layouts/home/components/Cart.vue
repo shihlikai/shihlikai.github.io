@@ -13,7 +13,7 @@
 import { shopping } from '@/assets/api/hexschool'
 
 export default {
-  name: 'CartLayout',
+  name: 'Cart',
   data () {
     return {
       cartDataList: []
