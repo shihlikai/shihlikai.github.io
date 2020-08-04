@@ -30,14 +30,23 @@ const router = new Router({
           meta: {
             title: '商品列表'
           },
-          component: () => import('@/views/shop')
-        },
-        {
-          path: '/shop/cart',
-          meta: {
-            title: '購物車列表'
-          },
-          component: () => import('@/views/shop/cart')
+          component: () => import('@/layouts/Shop'),
+          children: [
+            {
+              path: '',
+              meta: {
+                title: '購物車列表'
+              },
+              component: () => import('@/views/shop')
+            },
+            {
+              path: 'cart',
+              meta: {
+                title: '購物車列表'
+              },
+              component: () => import('@/views/shop/cart')
+            }
+          ]
         }
       ]
     },

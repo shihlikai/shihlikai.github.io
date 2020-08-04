@@ -1,119 +1,87 @@
 <template>
-  <div>
-    <!-- ##### Breadcrumb Area Start ##### -->
-    <div
-      class="breadcrumb-area bg-img bg-overlay jarallax"
-      :style="img"
-    >
-      <div class="container h-100">
-        <div class="row h-100 align-items-center">
-          <div class="col-12">
-            <div class="breadcrumb-text">
-              <h2>Shop</h2>
+  <section
+    v-loading.fullscreen.lock="loading"
+    :element-loading-text="loadingText"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+    class="shop-area section-padding-0-100 bg-white"
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="shop-filters mb-30 d-flex align-items-center justify-content-between pt-2">
+            <div>
+              <h6>Showing {{ startRow + 1 }}–{{ endRow }} of {{ filtered.length }} results</h6>
+            </div>
+            <div v-if="false">
+              <button
+                :disabled="cartDataList.length===0"
+                type="button"
+                class="btn btn-info"
+                @click="showCart = !showCart"
+              >
+                <svg-icon icon-class="shopping-cart" class="mr-1" />
+                購物車
+                <span
+                  v-if="cartDataList.length>0"
+                  class="badge badge-pill badge-danger"
+                >{{ cartDataList.length }}</span>
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="famie-breadcrumb">
-      <div class="container">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-              <router-link to="/home">
-                <font-awesome-icon icon="home" /> Home
-              </router-link>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">Shop</li>
-          </ol>
-        </nav>
-      </div>
-    </div>
-    <!-- ##### Breadcrumb Area End ##### -->
-    <section
-      v-loading.fullscreen.lock="loading"
-      :element-loading-text="loadingText"
-      element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(0, 0, 0, 0.8)"
-      class="shop-area section-padding-0-100 bg-white"
-    >
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
-            <div class="shop-filters mb-30 d-flex align-items-center justify-content-between pt-2">
-              <div>
-                <h6>Showing {{ startRow + 1 }}–{{ endRow }} of {{ filtered.length }} results</h6>
-              </div>
-              <div v-if="false">
-                <button
-                  :disabled="cartDataList.length===0"
-                  type="button"
-                  class="btn btn-info"
-                  @click="showCart = !showCart"
-                >
-                  <svg-icon icon-class="shopping-cart" class="mr-1" />
-                  購物車
-                  <span
-                    v-if="cartDataList.length>0"
-                    class="badge badge-pill badge-danger"
-                  >{{ cartDataList.length }}</span>
-                </button>
-              </div>
-            </div>
+      <div class="row">
+        <div class="col-12 col-md-4 col-lg-3">
+          <div class="single-widget-area">
+            <h5 class="widget-title">Catagories</h5>
+            <ul class="cata-list shop-page">
+              <li v-for="(value, key) of categories" :key="key">
+                <a style="cursor: pointer;text-decoration: underline;" @click="changeCategory(key)">{{ key }} ({{
+                  value.results }})</a>
+              </li>
+            </ul>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12 col-md-4 col-lg-3">
-            <div class="single-widget-area">
-              <h5 class="widget-title">Catagories</h5>
-              <ul class="cata-list shop-page">
-                <li v-for="(value, key) of categories" :key="key">
-                  <a style="cursor: pointer;text-decoration: underline;" @click="changeCategory(key)">{{ key }} ({{
-                    value.results }})</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-12 col-md-8 col-lg-9">
-            <div id="products" class="row">
-              <div v-for="(product, index) in pager" :key="index" class="col-12 col-sm-6 col-lg-4">
-                <div class="single-product-area mb-50">
-                  <div class="product-thumbnail">
-                    <img :src="product.imageUrl[0]" alt="">
-                    <!--                <span class="product-tags">Hot</span>-->
-                    <div class="product-meta-data">
-                      <a title="Add To Cart" @click="handleAddCart(product.id)">
-                        <svg-icon icon-class="shopping-cart-add" />
-                      </a>
-                    </div>
+        <div class="col-12 col-md-8 col-lg-9">
+          <div id="products" class="row">
+            <div v-for="(product, index) in pager" :key="index" class="col-12 col-sm-6 col-lg-4">
+              <div class="single-product-area mb-50">
+                <div class="product-thumbnail">
+                  <img :src="product.imageUrl[0]" alt="">
+                  <!--                <span class="product-tags">Hot</span>-->
+                  <div class="product-meta-data">
+                    <a title="Add To Cart" @click="handleAddCart(product.id)">
+                      <svg-icon icon-class="shopping-cart-add" />
+                    </a>
                   </div>
-                  <div class="product-desc text-center pt-4">
-                    <a href="#" class="product-title">{{ product.title }}</a>
-                    <h6 class="price">
-                      {{ product.price | money }}
-                      <span class="text-danger">{{ product.origin_price | money }}</span>
-                    </h6>
-                  </div>
+                </div>
+                <div class="product-desc text-center pt-4">
+                  <a href="#" class="product-title">{{ product.title }}</a>
+                  <h6 class="price">
+                    {{ product.price | money }}
+                    <span class="text-danger">{{ product.origin_price | money }}</span>
+                  </h6>
                 </div>
               </div>
             </div>
-            <nav>
-              <ul class="pagination mb-0 mt-50">
-                <li
-                  v-for="(page, index) in pages"
-                  :key="index"
-                  class="page-item"
-                  :class="page === currentPage ? 'active' : ''"
-                >
-                  <a class="page-link" @click="changePage(page)">{{ page }}</a>
-                </li>
-              </ul>
-            </nav>
           </div>
+          <nav>
+            <ul class="pagination mb-0 mt-50">
+              <li
+                v-for="(page, index) in pages"
+                :key="index"
+                class="page-item"
+                :class="page === currentPage ? 'active' : ''"
+              >
+                <a class="page-link" @click="changePage(page)">{{ page }}</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </template>
 
 <script>

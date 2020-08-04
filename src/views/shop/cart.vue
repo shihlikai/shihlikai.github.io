@@ -1,19 +1,5 @@
 <template>
   <div class="container">
-    <div class="famie-breadcrumb">
-      <div class="container">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-              <router-link to="/home">
-                <font-awesome-icon icon="home" /> Home
-              </router-link>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">Shop</li>
-          </ol>
-        </nav>
-      </div>
-    </div>
     <div v-loading="loading" class="p-1">
       <div class="pb-1 d-flex align-items-center justify-content-between">
         <h6>訂單內容</h6>
