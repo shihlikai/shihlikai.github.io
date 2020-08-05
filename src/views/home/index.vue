@@ -31,7 +31,7 @@ export default {
     Benefits: () => import('@/components/Home/Benefits'),
     AboutUs: () => import('@/components/Home/AboutUs'),
     Services: () => import('@/components/Home/Services'),
-    OurProducts: () => import('@/components/Home/OurProduce')
+    OurProducts: () => import('@/components/Home/OurProducts')
   }
 }
 </script>

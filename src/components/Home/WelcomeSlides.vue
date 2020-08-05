@@ -33,12 +33,12 @@ export default {
   data () {
     return {
       images: [
-        require('@/assets/img/unsplash/slides/jake-gard-CetB-bTDBtY-unsplash.jpg'),
-        require('@/assets/img/unsplash/slides/juan-camilo-guarin-p-G4jOCMCXxhE-unsplash.jpg'),
-        require('@/assets/img/unsplash/slides/arnaldo-aldana-HfH5yd70ox8-unsplash.jpg'),
-        require('@/assets/img/unsplash/slides/chandan-chaurasia-0-43q3kUGE0-unsplash.jpg'),
-        require('@/assets/img/unsplash/slides/joshua-j-cotten-M3NF-IS6L0E-unsplash.jpg'),
-        require('@/assets/img/unsplash/slides/max-O_TVsaeZNlE-unsplash.jpg')
+        require('@/assets/img/unsplash/welcome-slides/jake-gard-CetB-bTDBtY-unsplash.jpg'),
+        require('@/assets/img/unsplash/welcome-slides/juan-camilo-guarin-p-G4jOCMCXxhE-unsplash.jpg'),
+        require('@/assets/img/unsplash/welcome-slides/arnaldo-aldana-HfH5yd70ox8-unsplash.jpg'),
+        require('@/assets/img/unsplash/welcome-slides/chandan-chaurasia-0-43q3kUGE0-unsplash.jpg'),
+        require('@/assets/img/unsplash/welcome-slides/joshua-j-cotten-M3NF-IS6L0E-unsplash.jpg'),
+        require('@/assets/img/unsplash/welcome-slides/max-O_TVsaeZNlE-unsplash.jpg')
       ]
     }
   },

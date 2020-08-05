@@ -4,7 +4,7 @@
     <div
       class="services-thumbnail bg-img jarallax"
       :style="{
-        backgroundImage: `url(${require('@/assets/img/bg-img/7.jpg')})`
+        backgroundImage: `url(${require('@/assets/img/unsplash/services/scott-warman-NpNvI4ilT4A-unsplash.jpg')})`
       }"
     />
 

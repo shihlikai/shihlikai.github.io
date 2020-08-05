@@ -4,7 +4,7 @@
     <div
       class="main-footer bg-img bg-overlay section-padding-80-0"
       :style="{
-        backgroundImage: `url(${require('@/assets/img/bg-img/3.jpg')})`
+        backgroundImage: `url(${require('@/assets/img/unsplash/footer/luisa-brimble-3n1BVMZ5Pls-unsplash.jpg')})`
       }"
     >
       <div class="container">
