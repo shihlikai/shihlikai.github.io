@@ -19,10 +19,6 @@
     <!-- ##### Our Products Area Start ##### -->
     <our-products class="bg-white our-products-area section-padding-100" />
     <!-- ##### Our Products Area End ##### -->
-
-    <!-- ##### Footer Area Start ##### -->
-    <Footer class="footer-area" />
-    <!-- ##### Footer Area End ##### -->
   </div>
 </template>
 
@@ -35,8 +31,7 @@ export default {
     Benefits: () => import('@/components/Home/Benefits'),
     AboutUs: () => import('@/components/Home/AboutUs'),
     Services: () => import('@/components/Home/Services'),
-    OurProducts: () => import('@/components/Home/OurProducts'),
-    Footer: () => import('@/components/Home/Footer')
+    OurProducts: () => import('@/components/Home/OurProducts')
   }
 }
 </script>
