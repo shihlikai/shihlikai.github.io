@@ -1,5 +1,10 @@
 <template>
-  <section>
+  <section
+    v-loading="loading"
+    element-loading-text="加入購物車中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <div class="container">
       <div class="row">
         <div class="col-12">
@@ -15,105 +20,27 @@
       <div class="row">
 
         <!-- Single Product Area -->
-        <div class="col-12 col-sm-6 col-lg-3">
+        <div v-for="(product, index) in products" :key="index" class="col-12 col-sm-6 col-lg-3">
           <div class="single-product-area mb-50 wow fadeInUp" data-wow-delay="100ms">
             <!-- Product Thumbnail -->
             <div class="product-thumbnail">
-              <img :src="`${require('@/assets/img/bg-img/p1.jpg')}`" alt="">
+              <img :src="product.imageUrl[0]" alt="">
               <!-- Product Tags -->
-              <span class="product-tags">Hot</span>
+              <span class="product-tags bg-danger">Hot</span>
               <!-- Product Meta Data -->
               <div class="product-meta-data">
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Favourite"><i
-                  class="icon_heart_alt"
-                /></a>
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Add To Cart"><i class="icon_cart_alt" /></a>
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                  class="arrow_left-right_alt"
-                /></a>
+                <a title="Add To Cart">
+                  <svg-icon icon-class="shopping-cart-add" @click="handleAddCart(product.id)"/>
+                </a>
               </div>
             </div>
             <!-- Product Description -->
             <div class="product-desc text-center pt-4">
-              <a href="#" class="product-title">Strawberry</a>
-              <h6 class="price">$17.99</h6>
-            </div>
-          </div>
-        </div>
-
-        <!-- Single Product Area -->
-        <div class="col-12 col-sm-6 col-lg-3">
-          <div class="single-product-area mb-50 wow fadeInUp" data-wow-delay="300ms">
-            <!-- Product Thumbnail -->
-            <div class="product-thumbnail">
-              <img :src="`${require('@/assets/img/bg-img/p2.jpg')}`" alt="">
-              <!-- Product Meta Data -->
-              <div class="product-meta-data">
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Favourite"><i
-                  class="icon_heart_alt"
-                /></a>
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Add To Cart"><i class="icon_cart_alt" /></a>
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                  class="arrow_left-right_alt"
-                /></a>
-              </div>
-            </div>
-            <!-- Product Description -->
-            <div class="product-desc text-center pt-4">
-              <a href="#" class="product-title">Baked Breads</a>
-              <h6 class="price">$9.99</h6>
-            </div>
-          </div>
-        </div>
-
-        <!-- Single Product Area -->
-        <div class="col-12 col-sm-6 col-lg-3">
-          <div class="single-product-area mb-50 wow fadeInUp" data-wow-delay="500ms">
-            <!-- Product Thumbnail -->
-            <div class="product-thumbnail">
-              <img :src="`${require('@/assets/img/bg-img/p3.jpg')}`" alt="">
-              <!-- Product Meta Data -->
-              <div class="product-meta-data">
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Favourite"><i
-                  class="icon_heart_alt"
-                /></a>
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Add To Cart"><i class="icon_cart_alt" /></a>
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                  class="arrow_left-right_alt"
-                /></a>
-              </div>
-            </div>
-            <!-- Product Description -->
-            <div class="product-desc text-center pt-4">
-              <a href="#" class="product-title">Prime Beef</a>
-              <h6 class="price">$59.99</h6>
-            </div>
-          </div>
-        </div>
-
-        <!-- Single Product Area -->
-        <div class="col-12 col-sm-6 col-lg-3">
-          <div class="single-product-area mb-50 wow fadeInUp" data-wow-delay="700ms">
-            <!-- Product Thumbnail -->
-            <div class="product-thumbnail">
-              <img :src="`${require('@/assets/img/bg-img/p4.jpg')}`" alt="">
-              <!-- Product Tags -->
-              <span class="product-tags bg-danger">Sale</span>
-              <!-- Product Meta Data -->
-              <div class="product-meta-data">
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Favourite"><i
-                  class="icon_heart_alt"
-                /></a>
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Add To Cart"><i class="icon_cart_alt" /></a>
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                  class="arrow_left-right_alt"
-                /></a>
-              </div>
-            </div>
-            <!-- Product Description -->
-            <div class="product-desc text-center pt-4">
-              <a href="#" class="product-title">Pure Honey</a>
-              <h6 class="price"><span>$29.99</span> $19.99</h6>
+              <a href="#" class="product-title">{{ product.title }}</a>
+              <h6 class="price">
+                {{ product.price | money }}
+                <span class="text-danger">{{ product.origin_price | money }}</span>
+              </h6>
             </div>
           </div>
         </div>
@@ -123,7 +50,7 @@
       <div class="row">
         <div class="col-12">
           <div class="gotoshop-btn text-center wow fadeInUp" data-wow-delay="900ms">
-            <a href="shop.html" class="btn famie-btn">Go to Store</a>
+            <router-link to="/shop" class="btn famie-btn">更多商品</router-link>
           </div>
         </div>
       </div>
@@ -132,7 +59,36 @@
 </template>
 
 <script>
+import { getProducts, shopping } from '@/assets/api/hexschool'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
+
 export default {
-  name: 'OurProducts'
+  name: 'OurProducts',
+  data () {
+    return {
+      loading: false,
+      products: []
+    }
+  },
+  created () {
+    getProducts(1, 4).then(result => {
+      this.products = result.data
+    })
+  },
+  methods: {
+    handleAddCart (productId) {
+      this.loading = true
+      shopping.postCart(productId, 1).then(result => {
+        this.cartDataList.push(result)
+        Swal.fire('Good job', '加入購物車成功', 'success')
+      }).catch(error => {
+        Swal.fire('Oops...', error.errors[0], 'error')
+      })
+        .finally(() => {
+          this.loading = false
+        })
+    }
+  }
 }
 </script>

@@ -3,7 +3,9 @@
     <!-- ##### Breadcrumb Area Start ##### -->
     <div
       class="breadcrumb-area bg-img bg-overlay jarallax"
-      :style="img"
+      :style="{
+        backgroundImage: `url(${require('@/assets/img/unsplash/shop/inigo-de-la-maza-s285sDw5Ikc-unsplash.jpg')})`
+      }"
     >
       <div class="container h-100">
         <div class="row h-100 align-items-center">
@@ -36,12 +38,6 @@
 
 <script>
 export default {
-  data () {
-    return {
-      img: {
-        backgroundImage: `url(${require('@/assets/img/bg-img/18.jpg')})`
-      }
-    }
-  }
+
 }
 </script>

@@ -78,6 +78,19 @@ const router = new Router({
       // ]
     },
     {
+      path: '/about',
+      component: () => import('@/layouts/home/index'),
+      children: [
+        {
+          path: '',
+          meta: {
+            title: '關於我們'
+          },
+          component: () => import('@/views/about')
+        }
+      ]
+    },
+    {
       path: '/admin',
       component: () => import('@/layouts/view'),
       children: [

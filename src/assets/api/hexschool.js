@@ -1,14 +1,14 @@
 import { getAccessToken } from '@/assets/utils'
 import axios from 'axios'
 
-const baseUrl = `https://course-ec-api.hexschool.io/api/`
+const baseUrl = process.env.VUE_APP_APIPATH
 
 function getInfo () {
   let accessToken = getAccessToken()
   if (Object.keys(accessToken).length === 0) {
     accessToken = {
-      uuid: 'e46ecc3f-dc1f-4bc9-9d41-aa400f535ba4',
-      token: 'iOLSm6Ig8QumYi2iIrbXUWnDbvjWGbm6BIZdo3cQ2GX1LKv8XeVqb3MWEOBt'
+      uuid: process.env.VUE_APP_UUID,
+      token: process.env.VUE_APP_TOKEN
     }
   }
   return {
@@ -21,10 +21,10 @@ function getInfo () {
   }
 }
 
-export function getProducts (page) {
+export function getProducts (page = 1, paged = 25) {
   return new Promise((resolve, reject) => {
     const { authorityUrl, config } = getInfo()
-    axios.get(`${authorityUrl}/ec/products?page=${page}`, config)
+    axios.get(`${authorityUrl}/ec/products?page=${page}&paged=${paged}`, config)
       .then(res => {
         resolve(res.data)
       })
