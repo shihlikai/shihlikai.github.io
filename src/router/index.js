@@ -12,7 +12,7 @@ const router = new Router({
     {
       path: '/',
       redirect: '/home',
-      component: () => import('@/layouts/empty/index')
+      component: () => import('@/layouts/view')
     },
     {
       path: '/home',
@@ -79,7 +79,7 @@ const router = new Router({
     },
     {
       path: '/admin',
-      component: () => import('@/layouts/empty/index'),
+      component: () => import('@/layouts/view'),
       children: [
         {
           path: 'login',
