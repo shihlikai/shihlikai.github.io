@@ -67,7 +67,7 @@ import $ from 'jquery'
 export default {
   name: 'Header',
   components: {
-    Cart: () => import('@/layouts/home/components/Cart')
+    Cart: () => import('@/components/Home/Cart')
   },
   computed: {
     ...mapGetters({

@@ -31,13 +31,13 @@
               <td class="align-middle text-center">
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <span class="input-group-text cursor-pointer" @click="handelQuantityPlus($event, cart)">
+                    <span class="input-group-text cursor-pointer" @click="handleQuantityPlus($event, cart)">
                       <svg-icon icon-class="plus" />
                     </span>
                   </div>
                   <input type="number" class="form-control text-center" :value="cart.quantity">
                   <div class="input-group-prepend">
-                    <span class="input-group-text cursor-pointer" @click="handelQuantityMinus($event, cart)">
+                    <span class="input-group-text cursor-pointer" @click="handleQuantityMinus($event, cart)">
                       <svg-icon icon-class="minus" />
                     </span>
                   </div>
@@ -121,7 +121,7 @@
           <textarea id="message" class="form-control" rows="5" autocomplete="off" />
         </div>
         <div class="form-group text-right">
-          <button :disabled="cartDataList.length === 0 || invalid" type="submit" class="btn btn-primary">送出訂單</button>
+          <button :disabled="cartDataList.length === 0 || invalid" type="submit" class="btn btn-dark-green">送出訂單</button>
         </div>
       </ValidationObserver>
     </div>
@@ -132,6 +132,8 @@
 import { ValidationObserver, ValidationProvider, localize } from 'vee-validate/dist/vee-validate.full'
 import LOCALE_TW from 'vee-validate/dist/locale/zh_TW.json'
 import { shopping } from '@/assets/api/hexschool'
+
+import 'sweetalert2/dist/sweetalert2.css'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 localize('zh_TW', LOCALE_TW)
@@ -171,9 +173,10 @@ export default {
   },
   methods: {
     handleSubmit () {
+      this.clearCart()
       Swal.fire('', '訂單送出完成', 'success')
     },
-    handelQuantityPlus ($event, cart) {
+    handleQuantityPlus ($event, cart) {
       if ($event.target.getAttribute('isLocked')) {
         return
       }
@@ -185,7 +188,7 @@ export default {
         cart.quantity = plus
       })
     },
-    handelQuantityMinus ($event, cart) {
+    handleQuantityMinus ($event, cart) {
       if (cart.quantity === 1) {
         return
       }
