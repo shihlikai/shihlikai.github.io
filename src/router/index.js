@@ -11,19 +11,89 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/product',
-      component: () => import('@/layouts/index')
+      redirect: '/home',
+      component: () => import('@/layouts/view')
     },
     {
-      path: '/product',
-      meta: {
-        title: '商品列表'
-      },
-      component: () => import('@/views/product/index')
+      path: '/home',
+      component: () => import('@/layouts/home/index'),
+      children: [
+        {
+          path: '',
+          meta: {
+            title: '首頁'
+          },
+          component: () => import('@/views/home')
+        }
+      ]
+    },
+    {
+      path: '/shop',
+      component: () => import('@/layouts/home/index'),
+      redirect: '/shop/product',
+      children: [
+        {
+          path: 'product',
+          component: () => import('@/layouts/shop'),
+          children: [
+            {
+              path: '',
+              meta: {
+                title: '商品列表'
+              },
+              component: () => import('@/views/shop')
+            }
+          ]
+        },
+        {
+          path: 'cart',
+          component: () => import('@/layouts/shop'),
+          children: [
+            {
+              path: '',
+              meta: {
+                title: '購物車列表'
+              },
+              component: () => import('@/views/shop/cart')
+            }
+          ]
+        }
+      ]
+      // component: () => import('@/layouts/Shop'),
+      // children: [
+      //   {
+      //     path: '',
+      //     meta: {
+      //       title: '購物車列表'
+      //     },
+      //     component: () => import('@/views/shop')
+      //   },
+      //   {
+      //     path: 'cart',
+      //     meta: {
+      //       title: '購物車列表'
+      //     },
+      //     component: () => import('@/views/shop/cart')
+      //   }
+      // ]
+    },
+    {
+      path: '/about',
+      component: () => import('@/layouts/home/index'),
+      children: [
+        {
+          path: '',
+          meta: {
+            title: '關於我們'
+          },
+          component: () => import('@/views/about')
+        }
+      ]
     },
     {
       path: '/admin',
-      component: () => import('@/layouts/admin'),
+      redirect: '/admin/product',
+      component: () => import('@/layouts/view'),
       children: [
         {
           path: 'login',
@@ -33,16 +103,58 @@ const router = new Router({
           component: () => import('@/views/admin/login')
         },
         {
-          path: '/',
-          redirect: 'product',
-          component: () => import('@/layouts/index'),
+          path: 'product',
+          redirect: '',
+          component: () => import('@/layouts/admin/index'),
           children: [
             {
-              path: 'product',
+              path: '',
               meta: {
                 title: '商品列表'
               },
               component: () => import('@/views/admin/product')
+            }
+          ]
+        },
+        {
+          path: 'coupon',
+          redirect: '',
+          component: () => import('@/layouts/admin/index'),
+          children: [
+            {
+              path: '',
+              meta: {
+                title: '優惠券列表'
+              },
+              component: () => import('@/views/admin/coupon')
+            }
+          ]
+        },
+        {
+          path: 'order',
+          redirect: '',
+          component: () => import('@/layouts/admin/index'),
+          children: [
+            {
+              path: '',
+              meta: {
+                title: '訂單列表'
+              },
+              component: () => import('@/views/admin/order')
+            }
+          ]
+        },
+        {
+          path: 'picture',
+          redirect: '',
+          component: () => import('@/layouts/admin/index'),
+          children: [
+            {
+              path: '',
+              meta: {
+                title: '圖片儲存列表'
+              },
+              component: () => import('@/views/admin/picture')
             }
           ]
         }
