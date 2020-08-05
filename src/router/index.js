@@ -34,7 +34,7 @@ const router = new Router({
       children: [
         {
           path: 'product',
-          component: () => import('@/layouts/Shop'),
+          component: () => import('@/layouts/shop'),
           children: [
             {
               path: '',
@@ -47,7 +47,7 @@ const router = new Router({
         },
         {
           path: 'cart',
-          component: () => import('@/layouts/Shop'),
+          component: () => import('@/layouts/shop'),
           children: [
             {
               path: '',
@@ -92,6 +92,7 @@ const router = new Router({
     },
     {
       path: '/admin',
+      redirect: '/admin/product',
       component: () => import('@/layouts/view'),
       children: [
         {
@@ -102,16 +103,58 @@ const router = new Router({
           component: () => import('@/views/admin/login')
         },
         {
-          path: '/',
-          redirect: 'product',
+          path: 'product',
+          redirect: '',
           component: () => import('@/layouts/admin/index'),
           children: [
             {
-              path: 'product',
+              path: '',
               meta: {
                 title: '商品列表'
               },
               component: () => import('@/views/admin/product')
+            }
+          ]
+        },
+        {
+          path: 'coupon',
+          redirect: '',
+          component: () => import('@/layouts/admin/index'),
+          children: [
+            {
+              path: '',
+              meta: {
+                title: '優惠券列表'
+              },
+              component: () => import('@/views/admin/coupon')
+            }
+          ]
+        },
+        {
+          path: 'order',
+          redirect: '',
+          component: () => import('@/layouts/admin/index'),
+          children: [
+            {
+              path: '',
+              meta: {
+                title: '訂單列表'
+              },
+              component: () => import('@/views/admin/order')
+            }
+          ]
+        },
+        {
+          path: 'picture',
+          redirect: '',
+          component: () => import('@/layouts/admin/index'),
+          children: [
+            {
+              path: '',
+              meta: {
+                title: '圖片儲存列表'
+              },
+              component: () => import('@/views/admin/picture')
             }
           ]
         }

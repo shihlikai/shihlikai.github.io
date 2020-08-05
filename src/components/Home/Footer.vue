@@ -13,7 +13,7 @@
           <!-- Single Footer Widget Area -->
           <div class="col-12 col-sm-6 col-lg-3">
             <div class="footer-widget mb-80">
-              <a class="foo-logo d-block mb-30 bg-white pt-1 pb-1" style="border-radius: 10px; padding-left: 35px;"><img
+              <a class="foo-logo d-block mb-30 bg-white pt-1 pb-1 text-center" style="border-radius: 10px;"><img
                 :src="`${require('@/assets/img/unsplash/fb44bb5a-e563-48c5-b7fb-defbd3e4f8d0_200x200.png')}`"
                 alt=""
               ></a>

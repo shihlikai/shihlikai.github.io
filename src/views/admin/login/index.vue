@@ -80,7 +80,7 @@ export default {
             message: message,
             type: 'success',
             onClose: () => {
-              this.$router.push('/admin')
+              this.$router.push('/admin/product')
             }
           })
         } else {

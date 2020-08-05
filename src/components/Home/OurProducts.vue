@@ -29,8 +29,8 @@
               <span class="product-tags bg-danger">Hot</span>
               <!-- Product Meta Data -->
               <div class="product-meta-data">
-                <a title="Add To Cart">
-                  <svg-icon icon-class="shopping-cart-add" @click="handleAddCart(product.id)"/>
+                <a title="Add To Cart" @click="handleAddCart(product.id)">
+                  <svg-icon icon-class="shopping-cart-add" />
                 </a>
               </div>
             </div>
@@ -78,6 +78,7 @@ export default {
   },
   methods: {
     handleAddCart (productId) {
+      console.log('@@@@@@@@@@@@@')
       this.loading = true
       shopping.postCart(productId, 1).then(result => {
         this.cartDataList.push(result)
