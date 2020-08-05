@@ -4,7 +4,7 @@ const state = {}
 const mutations = {}
 const actions = {}
 const getters = {
-  name: _ => app.name
+  config: _ => app
 }
 
 export default {

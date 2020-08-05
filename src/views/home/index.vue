@@ -31,11 +31,7 @@ export default {
     Benefits: () => import('@/components/Home/Benefits'),
     AboutUs: () => import('@/components/Home/AboutUs'),
     Services: () => import('@/components/Home/Services'),
-    OurProducts: () => import('@/components/Home/OurProducts')
+    OurProducts: () => import('@/components/Home/OurProduce')
   }
 }
 </script>
-
-<style scoped>
-
-</style>

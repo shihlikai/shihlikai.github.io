@@ -8,18 +8,18 @@
             <div class="top-header-content d-flex align-items-center justify-content-between">
               <!-- Top Header Content -->
               <div class="top-header-meta">
-                <p>Welcome to <span>Farmie</span>, we hope you will enjoy our products and have good experience</p>
+                <p>歡迎來到 <span>{{ config.name }}</span>, 希望您會喜歡我們的產品</p>
               </div>
               <!-- Top Header Content -->
               <div class="top-header-meta text-right">
-                <a href="#" data-toggle="tooltip" data-placement="bottom" title="infodeercreative@gmail.com"><i
+                <a data-toggle="tooltip" data-placement="bottom" :title="config.email"><i
                   class="fa fa-envelope-o"
                   aria-hidden="true"
-                /> <span>Email: infodeercreative@gmail.com</span></a>
-                <a href="#" data-toggle="tooltip" data-placement="bottom" title="+1 234 122 122"><i
+                /> <span>Email: {{ config.email }}</span></a>
+                <a data-toggle="tooltip" data-placement="bottom" :title="config.telephone"><i
                   class="fa fa-phone"
                   aria-hidden="true"
-                /> <span>Call Us: +84 223 9000</span></a>
+                /> <span>Call Us: {{ config.telephone }}</span></a>
               </div>
             </div>
           </div>
@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      name: 'app/name'
+      config: 'app/config'
     })
   },
   mounted () {
@@ -81,3 +81,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+a[disabled="disabled"] {
+  pointer-events: none;
+}
+</style>
