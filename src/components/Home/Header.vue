@@ -27,11 +27,11 @@
       </div>
     </div>
     <div class="famie-main-menu">
-      <div style="background-color: #007e33;">
+      <div style="background-color: #2BBBAD;">
         <mdb-container>
-          <mdb-navbar color="success-color-dark" dark class="shadow-none">
-            <mdb-navbar-brand>
-              {{ name }}
+          <mdb-navbar color="default-color" dark class="shadow-none">
+            <mdb-navbar-brand class="bg-white pl-3" style="border-radius: 10px;">
+              <img :src="`${require('@/assets/img/unsplash/fb44bb5a-e563-48c5-b7fb-defbd3e4f8d0_200x200.png')}`">
             </mdb-navbar-brand>
             <mdb-navbar-toggler class="ml-5">
               <mdb-navbar-nav>
@@ -39,15 +39,6 @@
                 <mdb-nav-item to="/shop">Shop</mdb-nav-item>
                 <mdb-nav-item to="/about">About</mdb-nav-item>
                 <mdb-nav-item to="/admin">Admin</mdb-nav-item>
-                <mdb-dropdown tag="li" class="d-none nav-item">
-                  <mdb-dropdown-toggle slot="toggle" tag="a" nav-link color="success-color-dark" waves-fixed>Dropdown
-                  </mdb-dropdown-toggle>
-                  <mdb-dropdown-menu>
-                    <mdb-dropdown-item>Action</mdb-dropdown-item>
-                    <mdb-dropdown-item>Another action</mdb-dropdown-item>
-                    <mdb-dropdown-item>Something else here</mdb-dropdown-item>
-                  </mdb-dropdown-menu>
-                </mdb-dropdown>
               </mdb-navbar-nav>
               <form class="mr-4">
                 <cart />
