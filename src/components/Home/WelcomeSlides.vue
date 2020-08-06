@@ -15,7 +15,7 @@
               <div class="welcome-content">
                 <h2 data-animation="fadeInUp" data-delay="200ms">用心的堅持</h2>
                 <p data-animation="fadeInUp" data-delay="400ms">有機農業是遵守自然資源循環永續利用原則，不允許使用合成化學物質，強調水土資源保育與生態平衡之管理系統，並達到生產自然安全農產品目標之農業。</p>
-<!--                <a href="#" class="btn famie-btn mt-4" data-animation="bounceInUp" data-delay="600ms">Contact Us</a>-->
+                <!--                <a href="#" class="btn famie-btn mt-4" data-animation="bounceInUp" data-delay="600ms">Contact Us</a>-->
               </div>
             </div>
           </div>
