@@ -72,13 +72,12 @@ export default {
     }
   },
   created () {
-    getProducts(1, 4).then(result => {
+    getProducts(this.randomInteger(1, 20), 4).then(result => {
       this.products = result.data
     })
   },
   methods: {
     handleAddCart (productId) {
-      console.log('@@@@@@@@@@@@@')
       this.loading = true
       shopping.postCart(productId, 1).then(result => {
         this.cartDataList.push(result)
@@ -89,6 +88,9 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    randomInteger (min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min
     }
   }
 }
