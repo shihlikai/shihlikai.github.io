@@ -124,10 +124,11 @@
 </template>
 
 <script>
-import { getAdminProducts, patchAdminProduct, postAdminProduct, deleteAdminProduct } from '@/assets/api/hexschool'
+import { getAdminProducts, getAdminProduct, patchAdminProduct, postAdminProduct, deleteAdminProduct } from '@/assets/api/hexschool'
 const product_list = '商品列表讀取中'
 const product_update = '商品資料更新中'
 const product_delete = '商品資料刪除中'
+const product_load = '商品資料讀取中'
 const formTemplate = {
   origin_price: 1,
   price: 1,
@@ -178,8 +179,16 @@ export default {
       this.fetchProducts(page)
     },
     handleEditClick ({ row }) {
-      this.form = this.deepCopy(row)
-      this.dialog = true
+      this.loading = true
+      this.loadingText = product_load
+      getAdminProduct(row.id).then(res => {
+        this.form = res.data// this.deepCopy(row)
+        this.dialog = true
+      }).catch(error => {
+        console.error(error)
+      }).finally(() => {
+        this.loading = false
+      })
     },
     handleDeleteClick ({ row }) {
       return this.$confirm(`${row.title} 商品資料?`, '確認刪除', {

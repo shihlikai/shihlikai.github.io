@@ -98,6 +98,19 @@ export function postAdminLogin (body) {
   })
 }
 
+export function getAdminProduct (id) {
+  return new Promise((resolve, reject) => {
+    const { authorityUrl, config } = getInfo()
+    axios.get(`${authorityUrl}/admin/ec/product/${id}`, config)
+      .then(res => {
+        resolve(res.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+
 export const shopping = {
   getCart () {
     return new Promise((resolve, reject) => {
