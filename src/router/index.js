@@ -12,8 +12,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/home',
-      component: () => import('@/layouts/view')
+      redirect: '/home'
     },
     {
       path: '/home',
@@ -60,23 +59,6 @@ const router = new Router({
           ]
         }
       ]
-      // component: () => import('@/layouts/Shop'),
-      // children: [
-      //   {
-      //     path: '',
-      //     meta: {
-      //       title: '購物車列表'
-      //     },
-      //     component: () => import('@/views/shop')
-      //   },
-      //   {
-      //     path: 'cart',
-      //     meta: {
-      //       title: '購物車列表'
-      //     },
-      //     component: () => import('@/views/shop/cart')
-      //   }
-      // ]
     },
     {
       path: '/about',
