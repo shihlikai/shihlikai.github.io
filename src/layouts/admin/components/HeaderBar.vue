@@ -28,7 +28,7 @@ export default {
         message: '登出成功',
         type: 'success',
         onClose: () => {
-          this.$router.push('/admin/login')
+          this.$router.push('/login')
         }
       })
     }

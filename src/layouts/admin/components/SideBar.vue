@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="bg-white" style="padding: 15px 0px; text-align: center;">
+    <div style="padding: 15px 0px; text-align: center; background-color: #FFF;">
       <img :src="`${require('@/assets/img/unsplash/fb44bb5a-e563-48c5-b7fb-defbd3e4f8d0_200x200.png')}`">
     </div>
     <el-menu
@@ -11,35 +11,35 @@
       :router="true"
     >
       <el-menu-item
-        index="/"
+        index="/frontend"
         style="width:200px;"
       >
         <i class="el-icon-s-home" />
         <span slot="title">回前端頁面</span>
       </el-menu-item>
       <el-menu-item
-        index="/admin/product"
+        index="/product"
         style="width:200px;"
       >
         <i class="el-icon-s-promotion" />
         <span slot="title">商品列表</span>
       </el-menu-item>
       <el-menu-item
-        index="/admin/coupon"
+        index="/coupon"
         style="width:200px;"
       >
         <i class="el-icon-s-promotion" />
         <span slot="title">優惠券列表</span>
       </el-menu-item>
       <el-menu-item
-        index="/admin/order"
+        index="/order"
         style="width:200px;"
       >
         <i class="el-icon-s-promotion" />
         <span slot="title">訂單列表</span>
       </el-menu-item>
       <el-menu-item
-        index="/admin/picture"
+        index="/picture"
         style="width:200px;"
       >
         <i class="el-icon-s-promotion" />
