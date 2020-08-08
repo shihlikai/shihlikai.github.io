@@ -14,35 +14,35 @@
         index="/frontend"
         style="width:200px;"
       >
-        <i class="el-icon-s-home" />
+        <svg-icon icon-class="home" class="el-icon-" />
         <span slot="title">回前端頁面</span>
       </el-menu-item>
       <el-menu-item
         index="/product"
         style="width:200px;"
       >
-        <i class="el-icon-s-promotion" />
+        <svg-icon icon-class="store" class="el-icon-" />
         <span slot="title">商品列表</span>
       </el-menu-item>
       <el-menu-item
         index="/coupon"
         style="width:200px;"
       >
-        <i class="el-icon-s-promotion" />
+        <svg-icon icon-class="tag" class="el-icon-" />
         <span slot="title">優惠券列表</span>
       </el-menu-item>
       <el-menu-item
         index="/order"
         style="width:200px;"
       >
-        <i class="el-icon-s-promotion" />
+        <svg-icon icon-class="order-tracking" class="el-icon-" />
         <span slot="title">訂單列表</span>
       </el-menu-item>
       <el-menu-item
         index="/picture"
         style="width:200px;"
       >
-        <i class="el-icon-s-promotion" />
+        <svg-icon icon-class="folder" class="el-icon-" />
         <span slot="title">圖片儲存列表</span>
       </el-menu-item>
     </el-menu>
