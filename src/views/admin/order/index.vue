@@ -64,16 +64,12 @@
 import { adminOrders } from '@/assets/api/hexschool'
 
 const orders_list = '訂單列表讀取中'
-// const coupon_update = '優惠券資料更新中'
-// const coupon_delete = '優惠券資料刪除中'
-// const coupon_load = '優惠券資料讀取中'
 
 export default {
   data () {
     return {
       loading: false,
       loadingText: orders_list,
-      dialog: false,
       pagination: {},
       form: {},
       orders: []
@@ -83,10 +79,6 @@ export default {
     this.fetchOrders()
   },
   methods: {
-    cancelForm () {
-      this.loading = false
-      this.dialog = false
-    },
     fetchOrders (page) {
       return new Promise(resolve => {
         this.loadingText = orders_list

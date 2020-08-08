@@ -291,3 +291,41 @@ export const adminOrders = {
     })
   }
 }
+export const adminStorage = {
+  post (data) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${authorityUrl}/admin/storage`, data, {
+        ...config,
+        mimeType: 'multipart/form-data'
+      })
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  getAll (page = 1, paged = 25) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${authorityUrl}/admin/storage?page=${page}&paged=${paged}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  delete (id) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`${authorityUrl}/admin/storage/${id}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
