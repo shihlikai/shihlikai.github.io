@@ -25,7 +25,7 @@
     <div style="height: 20px;" />
     <el-table
       :data="products"
-      :row-style="handleRowStyle"
+      stripe
     >
       <el-table-column width="120">
         <div slot="header">圖片</div>
@@ -34,11 +34,14 @@
         </div>
       </el-table-column>
       <el-table-column prop="category" label="分類" width="120" />
-      <el-table-column prop="title" label="產品名稱" />
+      <el-table-column label="產品名稱">
+        <div slot-scope="{ row }" :class="!row.enabled?'enabled': ''">
+          {{ row.title }}
+        </div>
+      </el-table-column>
       <el-table-column prop="origin_price" label="原價" width="80" />
       <el-table-column prop="price" label="售價" width="80" />
-      <el-table-column width="200">
-        <div slot="header">編輯</div>
+      <el-table-column width="200" label="編輯">
         <div slot-scope="scope">
           <el-button type="primary" @click="handleEditClick(scope)">編輯</el-button>
           <el-button type="danger" @click="handleDeleteClick(scope)">刪除</el-button>
@@ -152,15 +155,6 @@ export default {
     this.fetchProducts()
   },
   methods: {
-    handleRowStyle ({ row, rowIndex }) {
-      const { enabled } = row
-      if (!enabled) {
-        return {
-          backgroundColor: '#E6A23C',
-          color: '#303133'
-        }
-      }
-    },
     fetchProducts (page) {
       return new Promise(resolve => {
         this.loadingText = product_list
@@ -251,5 +245,11 @@ export default {
 <style>
 .el-image__error {
   height: 415px;
+}
+.enabled:before{
+  content: '(未啟用)';
+  font-weight: bold;
+  font-style: italic;
+  color: #F56C6C;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 15px 0px; text-align: center; background-color: #FFF;">
+    <div style="padding: 15px 0px; text-align: center; background-color: #f5f5f5;">
       <img :src="`${require('@/assets/img/unsplash/fb44bb5a-e563-48c5-b7fb-defbd3e4f8d0_200x200.png')}`">
     </div>
     <el-menu

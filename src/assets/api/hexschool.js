@@ -174,7 +174,7 @@ export const shopping = {
   }
 }
 
-export const coupon = {
+export const adminCoupon = {
   post (data) {
     return new Promise((resolve, reject) => {
       const { authorityUrl, config } = getInfo()

@@ -25,9 +25,13 @@
     <el-table
       :data="coupons"
     >
-      <el-table-column prop="title" label="名稱" />
+      <el-table-column label="名稱">
+        <div slot-scope="{ row }" :class="!row.enabled?'enabled': ''">
+          {{ row.title }}
+        </div>
+      </el-table-column>
       <el-table-column prop="code" label="序號" />
-      <el-table-column prop="percent" label="折扣百分比" />
+      <el-table-column prop="percent" label="折扣%" width="80"/>
       <el-table-column prop="deadline.datetime" label="到期日" width="180" />
       <el-table-column width="200">
         <div slot="header">編輯</div>
@@ -86,7 +90,7 @@
 </template>
 
 <script>
-import { coupon } from '@/assets/api/hexschool'
+import { adminCoupon } from '@/assets/api/hexschool'
 
 const coupon_list = '優惠券列表讀取中'
 const coupon_update = '優惠券資料更新中'
@@ -94,11 +98,11 @@ const coupon_delete = '優惠券資料刪除中'
 const coupon_load = '優惠券資料讀取中'
 
 const formTemplate = {
-  'title': 'COUPON \u6a19\u984c',
-  'code': 'COUPON CODE',
-  'percent': 80,
-  'enabled': false,
-  'deadline_at': '2020-12-31 23:59:59'
+  'title': '',
+  'code': '',
+  'percent': 0,
+  'enabled': true,
+  'deadline_at': ''
 }
 
 Object.freeze(formTemplate)
@@ -119,7 +123,7 @@ export default {
   methods: {
     handleCreateClick () {
       this.dialog = true
-      this.from = Object.assign({}, formTemplate)
+      this.form = Object.assign({}, formTemplate)
     },
     cancelForm () {
       this.loading = false
@@ -132,9 +136,9 @@ export default {
         const id = this.form.id
         let instance
         if (id) {
-          // instance = patchAdminProduct(id, this.form)
+          instance = adminCoupon.patch(id, this.form)
         } else {
-          instance = coupon.post(this.form)
+          instance = adminCoupon.post(this.form)
         }
         instance.then(response => {
           return this.updateCouponsList()
@@ -153,7 +157,7 @@ export default {
       return new Promise(resolve => {
         this.loadingText = coupon_list
         this.loading = true
-        coupon.getAll(page).then(response => {
+        adminCoupon.getAll(page).then(response => {
           const { data, meta } = response
           this.coupons = data
           this.pagination = meta.pagination
@@ -166,7 +170,7 @@ export default {
     handleEditClick ({ row }) {
       this.loading = true
       this.loadingText = coupon_load
-      coupon.get(row.id).then(res => {
+      adminCoupon.get(row.id).then(res => {
         this.form = res.data
         this.form.deadline_at = this.form.deadline.datetime
         this.dialog = true
@@ -185,7 +189,7 @@ export default {
         return new Promise(resolve => {
           this.loadingText = coupon_delete
           this.loading = true
-          coupon.delete(row.id)
+          adminCoupon.delete(row.id)
             .then(() => {
               return this.updateCouponsList()
             }).finally(() => {
@@ -202,5 +206,11 @@ export default {
 <style scoped>
 .d-flex {
   display: flex;
+}
+.enabled:before{
+  content: '(未啟用)';
+  font-weight: bold;
+  font-style: italic;
+  color: #F56C6C;
 }
 </style>
