@@ -1,25 +1,35 @@
-import { getAccessToken } from '@/assets/utils'
+import { accessToken } from '@/assets/utils'
 import axios from 'axios'
 
 const baseUrl = process.env.VUE_APP_APIPATH
-
-function getInfo () {
-  let accessToken = getAccessToken()
-  if (Object.keys(accessToken).length === 0) {
-    accessToken = {
-      uuid: process.env.VUE_APP_UUID,
-      token: process.env.VUE_APP_TOKEN
+const requestConfig = {}
+Object.defineProperties(requestConfig, {
+  'authorityUrl': {
+    get () {
+      let { uuid } = accessToken
+      if (!uuid) {
+        uuid = process.env.VUE_APP_UUID
+      }
+      return `${baseUrl}${uuid}`
     }
-  }
-  return {
-    authorityUrl: `${baseUrl}${accessToken.uuid}`,
-    config: {
-      headers: {
-        'Authorization': 'Bearer ' + accessToken.token
+  },
+  'config': {
+    get () {
+      let { token } = accessToken
+      if (!token) {
+        token = process.env.VUE_APP_UUID
+      }
+      return {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       }
     }
   }
-}
+})
+
+const authorityUrl = requestConfig.authorityUrl
+const config = requestConfig.config
 
 export const auth = {
   login (body) {
@@ -36,7 +46,7 @@ export const auth = {
   logout () {
     return new Promise((resolve, reject) => {
       axios.post(`${baseUrl}auth/logout`, {
-        api_token: getAccessToken().token
+        api_token: accessToken.token
       })
         .then(res => {
           resolve(res.data)
@@ -49,7 +59,7 @@ export const auth = {
   check () {
     return new Promise((resolve, reject) => {
       axios.post(`${baseUrl}auth/check`, {
-        api_token: getAccessToken().token
+        api_token: accessToken.token
       })
         .then(res => {
           resolve(res.data)
@@ -63,7 +73,6 @@ export const auth = {
 export const product = {
   getAll (page = 1, paged = 25) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.get(`${authorityUrl}/ec/products?page=${page}&paged=${paged}`, config)
         .then(res => {
           resolve(res.data)
@@ -77,7 +86,6 @@ export const product = {
 export const shopping = {
   getCart () {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.get(`${authorityUrl}/ec/shopping`, config)
         .then(res => {
           resolve(res.data)
@@ -89,7 +97,6 @@ export const shopping = {
   },
   postCart (product, quantity) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.post(`${authorityUrl}/ec/shopping`, { product, quantity }, config)
         .then(res => {
           resolve(res.data)
@@ -101,7 +108,6 @@ export const shopping = {
   },
   patchCart (product, quantity) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.patch(`${authorityUrl}/ec/shopping`, { product, quantity }, config)
         .then(res => {
           resolve(res.data)
@@ -113,7 +119,6 @@ export const shopping = {
   },
   deleteCart (product) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.delete(`${authorityUrl}/ec/shopping/${product}`, config)
         .then(res => {
           resolve(res.data)
@@ -125,7 +130,6 @@ export const shopping = {
   },
   deleteAllCart () {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.delete(`${authorityUrl}/ec/shopping/all/product`, config)
         .then(res => {
           resolve(res.data)
@@ -139,7 +143,6 @@ export const shopping = {
 export const adminProduct = {
   get (id) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.get(`${authorityUrl}/admin/ec/product/${id}`, config)
         .then(res => {
           resolve(res.data)
@@ -149,9 +152,8 @@ export const adminProduct = {
         })
     })
   },
-  getAll (page) {
+  getAll (page = 1) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.get(`${authorityUrl}/admin/ec/products?page=${page}`, config)
         .then(res => {
           resolve(res.data)
@@ -163,7 +165,6 @@ export const adminProduct = {
   },
   post (body) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.post(`${authorityUrl}/admin/ec/product`, body, config)
         .then(res => {
           resolve(res.data)
@@ -175,7 +176,6 @@ export const adminProduct = {
   },
   delete (id) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.delete(`${authorityUrl}/admin/ec/product/${id}`, config)
         .then(res => {
           resolve(res.data)
@@ -187,7 +187,6 @@ export const adminProduct = {
   },
   patch (id, body) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.patch(`${authorityUrl}/admin/ec/product/${id}`, body, config)
         .then(res => {
           resolve(res.data)
@@ -201,7 +200,6 @@ export const adminProduct = {
 export const adminCoupon = {
   post (data) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.post(`${authorityUrl}/admin/ec/coupon`, data, config)
         .then(res => {
           resolve(res.data)
@@ -213,7 +211,6 @@ export const adminCoupon = {
   },
   get (id) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.get(`${authorityUrl}/admin/ec/coupon/${id}`, config)
         .then(res => {
           resolve(res.data)
@@ -225,7 +222,6 @@ export const adminCoupon = {
   },
   getAll (page = 1, paged = 25) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.get(`${authorityUrl}/admin/ec/coupons?page=${page}&paged=${paged}`, config)
         .then(res => {
           resolve(res.data)
@@ -237,7 +233,6 @@ export const adminCoupon = {
   },
   patch (id, data) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.patch(`${authorityUrl}/admin/ec/coupon/${id}`, data, config)
         .then(res => {
           resolve(res.data)
@@ -249,7 +244,6 @@ export const adminCoupon = {
   },
   delete (id) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.delete(`${authorityUrl}/admin/ec/coupon/${id}`, config)
         .then(res => {
           resolve(res.data)
