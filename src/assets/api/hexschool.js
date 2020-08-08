@@ -34,58 +34,6 @@ export function getProducts (page = 1, paged = 25) {
   })
 }
 
-export function getAdminProducts (page) {
-  return new Promise((resolve, reject) => {
-    const { authorityUrl, config } = getInfo()
-    axios.get(`${authorityUrl}/admin/ec/products?page=${page}`, config)
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
-}
-
-export function patchAdminProduct (id, body) {
-  return new Promise((resolve, reject) => {
-    const { authorityUrl, config } = getInfo()
-    axios.patch(`${authorityUrl}/admin/ec/product/${id}`, body, config)
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
-}
-
-export function deleteAdminProduct (id) {
-  return new Promise((resolve, reject) => {
-    const { authorityUrl, config } = getInfo()
-    axios.delete(`${authorityUrl}/admin/ec/product/${id}`, config)
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
-}
-
-export function postAdminProduct (body) {
-  return new Promise((resolve, reject) => {
-    const { authorityUrl, config } = getInfo()
-    axios.post(`${authorityUrl}/admin/ec/product`, body, config)
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
-}
-
 export function postAdminLogin (body) {
   return new Promise((resolve, reject) => {
     axios.post(`${baseUrl}auth/login`, body)
@@ -94,19 +42,6 @@ export function postAdminLogin (body) {
       })
       .catch(error => {
         reject(error.response.data)
-      })
-  })
-}
-
-export function getAdminProduct (id) {
-  return new Promise((resolve, reject) => {
-    const { authorityUrl, config } = getInfo()
-    axios.get(`${authorityUrl}/admin/ec/product/${id}`, config)
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(error => {
-        reject(error)
       })
   })
 }
@@ -173,7 +108,68 @@ export const shopping = {
     })
   }
 }
-
+export const adminProduct = {
+  get (id) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.get(`${authorityUrl}/admin/ec/product/${id}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  getAll (page) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.get(`${authorityUrl}/admin/ec/products?page=${page}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  post (body) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.post(`${authorityUrl}/admin/ec/product`, body, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  delete (id) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.delete(`${authorityUrl}/admin/ec/product/${id}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  patch (id, body) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.patch(`${authorityUrl}/admin/ec/product/${id}`, body, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
 export const adminCoupon = {
   post (data) {
     return new Promise((resolve, reject) => {

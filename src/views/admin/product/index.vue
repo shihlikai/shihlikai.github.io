@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import { getAdminProducts, getAdminProduct, patchAdminProduct, postAdminProduct, deleteAdminProduct } from '@/assets/api/hexschool'
+import { adminProduct } from '@/assets/api/hexschool'
 const product_list = '商品列表讀取中'
 const product_update = '商品資料更新中'
 const product_delete = '商品資料刪除中'
@@ -159,7 +159,7 @@ export default {
       return new Promise(resolve => {
         this.loadingText = product_list
         this.loading = true
-        getAdminProducts(page).then(response => {
+        adminProduct.getAll(page).then(response => {
           const { data, meta } = response
           this.products = data
           this.pagination = meta.pagination
@@ -175,7 +175,7 @@ export default {
     handleEditClick ({ row }) {
       this.loading = true
       this.loadingText = product_load
-      getAdminProduct(row.id).then(res => {
+      adminProduct.get(row.id).then(res => {
         this.form = res.data// this.deepCopy(row)
         this.dialog = true
       }).catch(error => {
@@ -193,7 +193,7 @@ export default {
         return new Promise(resolve => {
           this.loadingText = product_delete
           this.loading = true
-          deleteAdminProduct(row.id)
+          adminProduct.delete(row.id)
             .then(() => {
               return this.updateProductsList()
             }).finally(() => {
@@ -210,9 +210,9 @@ export default {
         const id = this.form.id
         let instance
         if (id) {
-          instance = patchAdminProduct(id, this.form)
+          instance = adminProduct.patch(id, this.form)
         } else {
-          instance = postAdminProduct(this.form)
+          instance = adminProduct.post(this.form)
         }
         instance.then(response => {
           return this.updateProductsList()
