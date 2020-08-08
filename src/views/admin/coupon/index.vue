@@ -31,7 +31,7 @@
         </div>
       </el-table-column>
       <el-table-column prop="code" label="序號" />
-      <el-table-column prop="percent" label="折扣%" width="80"/>
+      <el-table-column prop="percent" label="折扣%" width="80" />
       <el-table-column prop="deadline.datetime" label="到期日" width="180" />
       <el-table-column width="200">
         <div slot="header">編輯</div>
