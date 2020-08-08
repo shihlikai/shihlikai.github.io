@@ -140,6 +140,19 @@ export const shopping = {
     })
   }
 }
+export const orders = {
+  post (body) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${authorityUrl}/ec/orders`, body, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
 export const adminProduct = {
   get (id) {
     return new Promise((resolve, reject) => {
@@ -245,6 +258,30 @@ export const adminCoupon = {
   delete (id) {
     return new Promise((resolve, reject) => {
       axios.delete(`${authorityUrl}/admin/ec/coupon/${id}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
+export const adminOrders = {
+  get (id) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${authorityUrl}/admin/ec/orders/${id}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  getAll (page = 1, paged = 25) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${authorityUrl}/admin/ec/orders?page=${page}&paged=${paged}`, config)
         .then(res => {
           resolve(res.data)
         })
