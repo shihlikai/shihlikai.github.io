@@ -173,3 +173,66 @@ export const shopping = {
     })
   }
 }
+
+export const coupon = {
+  post (data) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.post(`${authorityUrl}/admin/ec/coupon`, data, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  get (id) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.get(`${authorityUrl}/admin/ec/coupon/${id}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  getAll (page = 1, paged = 25) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.get(`${authorityUrl}/admin/ec/coupons?page=${page}&paged=${paged}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  patch (id, data) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.patch(`${authorityUrl}/admin/ec/coupon/${id}`, data, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  delete (id) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.delete(`${authorityUrl}/admin/ec/coupon/${id}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}

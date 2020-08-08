@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import app from '@/app.config'
 
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -77,8 +78,9 @@ const router = new Router({
   ]
 })
 router.beforeEach((to, from, next) => {
+  console.log('frontend...')
   NProgress.start()
-  document.title = `${(to.meta || {}).title || ''}`
+  document.title = `${(to.meta || {}).title || ''} - ${app.name}`
   next()
 })
 router.afterEach(() => {

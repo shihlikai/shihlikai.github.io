@@ -89,6 +89,7 @@ const router = new Router({
   ]
 })
 router.beforeEach((to, from, next) => {
+  console.log('backend...')
   NProgress.start()
   const suffix = '後台管理平台'
   if (checkAccessToken()) {
