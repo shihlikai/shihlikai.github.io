@@ -32,6 +32,32 @@ export const auth = {
           reject(error.response.data)
         })
     })
+  },
+  logout () {
+    return new Promise((resolve, reject) => {
+      axios.post(`${baseUrl}auth/logout`, {
+        api_token: getAccessToken().token
+      })
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error.response.data)
+        })
+    })
+  },
+  check () {
+    return new Promise((resolve, reject) => {
+      axios.post(`${baseUrl}auth/check`, {
+        api_token: getAccessToken().token
+      })
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error.response.data)
+        })
+    })
   }
 }
 export const product = {

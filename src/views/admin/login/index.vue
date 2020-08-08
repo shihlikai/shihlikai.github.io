@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { postAdminLogin } from '@/assets/api/hexschool'
+import { auth } from '@/assets/api/hexschool'
 import { setAccessToken } from '@/assets/utils'
 
 export default {
@@ -69,36 +69,37 @@ export default {
     handleLoginClick () {
       const { email, password } = this
       this.loading = true
-      postAdminLogin({
+      auth.login({
         email, password
-      }).then(result => {
-        const { success, message, uuid, token, expired } = result
-        if (success) {
-          setAccessToken({ uuid, token }, expired)
-          this.$message({
-            duration: 1000,
-            message: message,
-            type: 'success',
-            onClose: () => {
-              this.$router.push('/product')
-            }
-          })
-        } else {
-          this.$message.error(message)
-        }
-      }).catch(error => {
-        // eslint-disable-next-line prefer-const
-        let { message, errors } = error
-        if (errors) {
-          message = ''
-          Object.keys(errors).forEach(key => {
-            message += errors[key].join(',')
-          })
-        }
-        this.$message.error(message)
-      }).finally(() => {
-        this.loading = false
       })
+        .then(result => {
+          const { success, message, uuid, token, expired } = result
+          if (success) {
+            setAccessToken({ uuid, token }, expired)
+            this.$message({
+              duration: 1000,
+              message: message,
+              type: 'success',
+              onClose: () => {
+                this.$router.push('/product')
+              }
+            })
+          } else {
+            this.$message.error(message)
+          }
+        }).catch(error => {
+        // eslint-disable-next-line prefer-const
+          let { message, errors } = error
+          if (errors) {
+            message = ''
+            Object.keys(errors).forEach(key => {
+              message += errors[key].join(',')
+            })
+          }
+          this.$message.error(message)
+        }).finally(() => {
+          this.loading = false
+        })
     }
   }
 }

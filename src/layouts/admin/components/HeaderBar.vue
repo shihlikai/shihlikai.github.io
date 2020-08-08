@@ -12,6 +12,7 @@
 
 <script>
 import { removeAccessToken } from '@/assets/utils'
+import { auth } from '@/assets/api/hexschool'
 export default {
   name: 'HeaderBar',
   data () {
@@ -22,14 +23,16 @@ export default {
   methods: {
     handleLogoutClick () {
       this.disabled = true
-      removeAccessToken()
-      this.$message({
-        duration: 1000,
-        message: '登出成功',
-        type: 'success',
-        onClose: () => {
-          this.$router.push('/login')
-        }
+      auth.logout().then(_ => {
+        removeAccessToken()
+        this.$message({
+          duration: 1000,
+          message: '登出成功',
+          type: 'success',
+          onClose: () => {
+            this.$router.push('/login')
+          }
+        })
       })
     }
   }
