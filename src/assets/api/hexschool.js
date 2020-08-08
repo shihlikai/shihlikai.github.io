@@ -21,31 +21,33 @@ function getInfo () {
   }
 }
 
-export function getProducts (page = 1, paged = 25) {
-  return new Promise((resolve, reject) => {
-    const { authorityUrl, config } = getInfo()
-    axios.get(`${authorityUrl}/ec/products?page=${page}&paged=${paged}`, config)
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
+export const auth = {
+  login (body) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${baseUrl}auth/login`, body)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error.response.data)
+        })
+    })
+  }
 }
-
-export function postAdminLogin (body) {
-  return new Promise((resolve, reject) => {
-    axios.post(`${baseUrl}auth/login`, body)
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(error => {
-        reject(error.response.data)
-      })
-  })
+export const product = {
+  getAll (page = 1, paged = 25) {
+    return new Promise((resolve, reject) => {
+      const { authorityUrl, config } = getInfo()
+      axios.get(`${authorityUrl}/ec/products?page=${page}&paged=${paged}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
 }
-
 export const shopping = {
   getCart () {
     return new Promise((resolve, reject) => {
