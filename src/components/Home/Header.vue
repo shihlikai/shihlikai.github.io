@@ -30,7 +30,7 @@
       <div style="background-color: #2BBBAD;">
         <mdb-container>
           <mdb-navbar color="default-color" dark class="shadow-none">
-            <mdb-navbar-brand class="bg-white pl-3" style="border-radius: 10px;">
+            <mdb-navbar-brand class="bg-white text-center" style="border-radius: 10px;">
               <img :src="`${require('@/assets/img/unsplash/fb44bb5a-e563-48c5-b7fb-defbd3e4f8d0_200x200.png')}`">
             </mdb-navbar-brand>
             <mdb-navbar-toggler class="ml-5">
@@ -38,7 +38,7 @@
                 <mdb-nav-item to="/home" active>Home</mdb-nav-item>
                 <mdb-nav-item to="/shop">Shop</mdb-nav-item>
                 <mdb-nav-item to="/about">About</mdb-nav-item>
-                <mdb-nav-item to="/admin">Admin</mdb-nav-item>
+                <mdb-nav-item href="/admin">Admin</mdb-nav-item>
               </mdb-navbar-nav>
               <form class="mr-4">
                 <cart />

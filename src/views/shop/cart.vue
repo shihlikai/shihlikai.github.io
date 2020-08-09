@@ -1,7 +1,13 @@
 <template>
   <div class="container">
     <h5 class="text-center">購物車</h5>
-    <div v-loading="loading" class="p-1">
+    <div
+      v-loading.fullscreen.lock="loading"
+      element-loading-text="資料處理中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      class="p-1"
+    >
       <div class="pb-1 d-flex align-items-center justify-content-between">
         <h6>訂單內容</h6>
         <button v-if="cartDataList.length > 0" type="button" class="btn btn-danger btn-sm" @click="clearCart">
@@ -69,7 +75,7 @@
         <ValidationProvider v-slot="{ errors }" name="收件人姓名" rules="required">
           <div class="form-group required">
             <label for="recipient">收件人姓名</label>
-            <input id="recipient" v-model="form.recipient" type="text" class="form-control" autocomplete="off">
+            <input id="recipient" v-model="form.name" type="text" class="form-control" autocomplete="off">
             <p class="text-danger">{{ errors[0] }}</p>
           </div>
         </ValidationProvider>
@@ -87,7 +93,7 @@
         >
           <div class="form-group required">
             <label for="phone">手機號碼</label>
-            <input id="phone" v-model="form.phone" type="tel" class="form-control" autocomplete="off">
+            <input id="phone" v-model="form.tel" type="tel" class="form-control" autocomplete="off">
             <p class="text-danger">{{ errors[0] }}</p>
           </div>
         </ValidationProvider>
@@ -118,10 +124,11 @@
         </ValidationProvider>
         <div class="form-group">
           <label for="message">留言</label>
-          <textarea id="message" class="form-control" rows="5" autocomplete="off" />
+          <textarea id="message" v-model="form.message" class="form-control" rows="5" autocomplete="off" />
         </div>
         <div class="form-group text-right">
-          <button :disabled="cartDataList.length === 0 || invalid" type="submit" class="btn btn-dark-green">送出訂單</button>
+          <button :disabled="cartDataList.length === 0 || invalid" type="submit" class="btn btn-dark-green">送出訂單
+          </button>
         </div>
       </ValidationObserver>
     </div>
@@ -131,7 +138,7 @@
 <script>
 import { ValidationObserver, ValidationProvider, localize } from 'vee-validate/dist/vee-validate.full'
 import LOCALE_TW from 'vee-validate/dist/locale/zh_TW.json'
-import { shopping } from '@/assets/api/hexschool'
+import { shopping, orders } from '@/assets/api/hexschool'
 
 import 'sweetalert2/dist/sweetalert2.css'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
@@ -145,11 +152,12 @@ export default {
   data () {
     return {
       form: {
-        recipient: '',
+        name: '',
         email: '',
-        phone: '',
+        tel: '',
         address: '',
-        payment: null
+        payment: null,
+        message: ''
       },
       cartDataList: [],
       loading: false,
@@ -173,8 +181,16 @@ export default {
   },
   methods: {
     handleSubmit () {
-      this.clearCart()
-      Swal.fire('', '訂單送出完成', 'success')
+      this.loading = true
+      orders.post(this.form)
+        .then(result => {
+          console.log(result)
+          this.form = {}
+          this.cartDataList.splice(0, this.cartDataList.length)
+          Swal.fire('', '訂單送出完成', 'success')
+        }).finally(() => {
+          this.loading = false
+        })
     },
     handleQuantityPlus ($event, cart) {
       if ($event.target.getAttribute('isLocked')) {
@@ -247,8 +263,9 @@ export default {
 </script>
 <style scoped>
 /deep/ .el-loading-mask {
-  z-index: 0;
+  z-index: 3;
 }
+
 .form-group.required > label:before {
   content: " * ";
   color: red;

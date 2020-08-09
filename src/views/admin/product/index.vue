@@ -5,7 +5,7 @@
     element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.8)"
   >
-    <div style="display: flex;">
+    <div style="position: relative;display: flex;">
       <div class="el-pagination is-background">
         <ul class="el-pager">
           <li class="number active">總筆數：{{ pagination.total }}</li>
@@ -25,7 +25,7 @@
     <div style="height: 20px;" />
     <el-table
       :data="products"
-      :row-style="handleRowStyle"
+      stripe
     >
       <el-table-column width="120">
         <div slot="header">圖片</div>
@@ -34,11 +34,14 @@
         </div>
       </el-table-column>
       <el-table-column prop="category" label="分類" width="120" />
-      <el-table-column prop="title" label="產品名稱" />
+      <el-table-column label="產品名稱">
+        <div slot-scope="{ row }" :class="!row.enabled?'enabled': ''">
+          {{ row.title }}
+        </div>
+      </el-table-column>
       <el-table-column prop="origin_price" label="原價" width="80" />
       <el-table-column prop="price" label="售價" width="80" />
-      <el-table-column width="200">
-        <div slot="header">編輯</div>
+      <el-table-column width="200" label="編輯">
         <div slot-scope="scope">
           <el-button type="primary" @click="handleEditClick(scope)">編輯</el-button>
           <el-button type="danger" @click="handleDeleteClick(scope)">刪除</el-button>
@@ -124,10 +127,11 @@
 </template>
 
 <script>
-import { getAdminProducts, patchAdminProduct, postAdminProduct, deleteAdminProduct } from '@/assets/api/hexschool'
+import { adminProduct } from '@/assets/api/hexschool'
 const product_list = '商品列表讀取中'
 const product_update = '商品資料更新中'
 const product_delete = '商品資料刪除中'
+const product_load = '商品資料讀取中'
 const formTemplate = {
   origin_price: 1,
   price: 1,
@@ -151,20 +155,11 @@ export default {
     this.fetchProducts()
   },
   methods: {
-    handleRowStyle ({ row, rowIndex }) {
-      const { enabled } = row
-      if (!enabled) {
-        return {
-          backgroundColor: '#E6A23C',
-          color: '#303133'
-        }
-      }
-    },
     fetchProducts (page) {
       return new Promise(resolve => {
         this.loadingText = product_list
         this.loading = true
-        getAdminProducts(page).then(response => {
+        adminProduct.getAll(page).then(response => {
           const { data, meta } = response
           this.products = data
           this.pagination = meta.pagination
@@ -178,8 +173,16 @@ export default {
       this.fetchProducts(page)
     },
     handleEditClick ({ row }) {
-      this.form = this.deepCopy(row)
-      this.dialog = true
+      this.loading = true
+      this.loadingText = product_load
+      adminProduct.get(row.id).then(res => {
+        this.form = res.data// this.deepCopy(row)
+        this.dialog = true
+      }).catch(error => {
+        console.error(error)
+      }).finally(() => {
+        this.loading = false
+      })
     },
     handleDeleteClick ({ row }) {
       return this.$confirm(`${row.title} 商品資料?`, '確認刪除', {
@@ -190,7 +193,7 @@ export default {
         return new Promise(resolve => {
           this.loadingText = product_delete
           this.loading = true
-          deleteAdminProduct(row.id)
+          adminProduct.delete(row.id)
             .then(() => {
               return this.updateProductsList()
             }).finally(() => {
@@ -207,9 +210,9 @@ export default {
         const id = this.form.id
         let instance
         if (id) {
-          instance = patchAdminProduct(id, this.form)
+          instance = adminProduct.patch(id, this.form)
         } else {
-          instance = postAdminProduct(this.form)
+          instance = adminProduct.post(this.form)
         }
         instance.then(response => {
           return this.updateProductsList()
@@ -242,5 +245,11 @@ export default {
 <style>
 .el-image__error {
   height: 415px;
+}
+.enabled:before{
+  content: '(未啟用)';
+  font-weight: bold;
+  font-style: italic;
+  color: #F56C6C;
 }
 </style>

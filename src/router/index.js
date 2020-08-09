@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import { checkAccessToken } from '@/assets/utils'
+import app from '@/app.config'
 
-const { name } = require('@/app.config')
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 Vue.use(Router)
 
@@ -12,8 +14,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/home',
-      component: () => import('@/layouts/view')
+      redirect: '/home'
     },
     {
       path: '/home',
@@ -60,23 +61,6 @@ const router = new Router({
           ]
         }
       ]
-      // component: () => import('@/layouts/Shop'),
-      // children: [
-      //   {
-      //     path: '',
-      //     meta: {
-      //       title: '購物車列表'
-      //     },
-      //     component: () => import('@/views/shop')
-      //   },
-      //   {
-      //     path: 'cart',
-      //     meta: {
-      //       title: '購物車列表'
-      //     },
-      //     component: () => import('@/views/shop/cart')
-      //   }
-      // ]
     },
     {
       path: '/about',
@@ -90,104 +74,17 @@ const router = new Router({
           component: () => import('@/views/about')
         }
       ]
-    },
-    {
-      path: '/admin',
-      redirect: '/admin/product',
-      component: () => import('@/layouts/view'),
-      children: [
-        {
-          path: 'login',
-          meta: {
-            title: '登入'
-          },
-          component: () => import('@/views/admin/login')
-        },
-        {
-          path: 'product',
-          redirect: '',
-          component: () => import('@/layouts/admin/index'),
-          children: [
-            {
-              path: '',
-              meta: {
-                title: '商品列表'
-              },
-              component: () => import('@/views/admin/product')
-            }
-          ]
-        },
-        {
-          path: 'coupon',
-          redirect: '',
-          component: () => import('@/layouts/admin/index'),
-          children: [
-            {
-              path: '',
-              meta: {
-                title: '優惠券列表'
-              },
-              component: () => import('@/views/admin/coupon')
-            }
-          ]
-        },
-        {
-          path: 'order',
-          redirect: '',
-          component: () => import('@/layouts/admin/index'),
-          children: [
-            {
-              path: '',
-              meta: {
-                title: '訂單列表'
-              },
-              component: () => import('@/views/admin/order')
-            }
-          ]
-        },
-        {
-          path: 'picture',
-          redirect: '',
-          component: () => import('@/layouts/admin/index'),
-          children: [
-            {
-              path: '',
-              meta: {
-                title: '圖片儲存列表'
-              },
-              component: () => import('@/views/admin/picture')
-            }
-          ]
-        }
-      ]
     }
   ]
 })
 router.beforeEach((to, from, next) => {
-  let suffix = name
-  if (to.path.startsWith('/admin')) {
-    suffix = '後台管理平台'
-    if (checkAccessToken()) {
-      if (isAdminLoginPath()) {
-        next('/admin/product')
-      } else {
-        next()
-      }
-    } else {
-      if (isAdminLoginPath()) {
-        next()
-      } else {
-        next('/admin/login')
-      }
-    }
-  } else {
-    next()
-  }
-
-  document.title = `${(to.meta || {}).title || ''} - ${suffix}`
-
-  function isAdminLoginPath () {
-    return to.path === '/admin/login'
-  }
+  console.log('frontend...')
+  NProgress.start()
+  document.title = `${(to.meta || {}).title || ''} - ${app.name}`
+  next()
 })
+router.afterEach(() => {
+  NProgress.done()
+})
+
 export default router

@@ -5,11 +5,16 @@ import store from './store'
 
 import '@/icons'
 
-import '@/assets/scss/reset.scss'
-import 'element-ui/lib/theme-chalk/index.css'
+// import '@/assets/scss/reset.scss'
+// import 'element-ui/lib/theme-chalk/index.css'
 
-import locale from 'element-ui/lib/locale/lang/zh-TW'
-import ElementUI from 'element-ui'
+// import locale from 'element-ui/lib/locale/lang/zh-TW'
+// import ElementUI from 'element-ui'
+
+import 'element-ui/lib/theme-chalk/loading.css'
+import 'element-ui/lib/theme-chalk/icon.css'
+import { Loading } from 'element-ui'
+Vue.use(Loading.directive)
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle'
@@ -31,7 +36,7 @@ for (const component in mdbvue) {
   Vue.component(component, mdbvue[component])
 }
 
-Vue.use(ElementUI, { locale })
+// Vue.use(ElementUI, { locale })
 Vue.filter('money', function (value) {
   return `$${value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`
 })

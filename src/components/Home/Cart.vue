@@ -1,10 +1,10 @@
 <template>
-  <router-link to="/shop/cart" :disabled="cartDataList.length===0" class="text-white">
+  <router-link to="/shop/cart" :disabled="cartDataList.length===0" class="text-white position-relative">
     <font-awesome-icon icon="shopping-cart" />
     <span
       v-if="cartDataList.length>0"
       class="badge badge-pill badge-danger position-absolute"
-      style="top: 5px;"
+      style="top: -10px;"
     >{{ cartDataList.length }}</span>
   </router-link>
 </template>
