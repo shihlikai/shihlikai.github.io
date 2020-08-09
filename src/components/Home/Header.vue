@@ -38,7 +38,7 @@
                 <mdb-nav-item to="/home" active>Home</mdb-nav-item>
                 <mdb-nav-item to="/shop">Shop</mdb-nav-item>
                 <mdb-nav-item to="/about">About</mdb-nav-item>
-                <mdb-nav-item href="/admin">Admin</mdb-nav-item>
+                <mdb-nav-item href="/admin.html">Admin</mdb-nav-item>
               </mdb-navbar-nav>
               <form class="mr-4">
                 <cart />

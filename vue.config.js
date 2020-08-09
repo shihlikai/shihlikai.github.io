@@ -20,7 +20,7 @@ module.exports = {
       entry: 'src/admin.js',
       template: 'public/index.html',
       title: `後台管理平台 - (${app.name})`,
-      filename: 'admin/index.html',
+      filename: 'admin.html',
       chunks: ['chunk-vendors', 'chunk-common', 'admin']
     }
   },
