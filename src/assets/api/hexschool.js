@@ -28,9 +28,6 @@ Object.defineProperties(requestConfig, {
   }
 })
 
-const authorityUrl = requestConfig.authorityUrl
-const config = requestConfig.config
-
 export const auth = {
   login (body) {
     return new Promise((resolve, reject) => {
@@ -73,7 +70,7 @@ export const auth = {
 export const product = {
   getAll (page = 1, paged = 25) {
     return new Promise((resolve, reject) => {
-      axios.get(`${authorityUrl}/ec/products?page=${page}&paged=${paged}`, config)
+      axios.get(`${requestConfig.authorityUrl}/ec/products?page=${page}&paged=${paged}`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -86,7 +83,7 @@ export const product = {
 export const shopping = {
   getCart () {
     return new Promise((resolve, reject) => {
-      axios.get(`${authorityUrl}/ec/shopping`, config)
+      axios.get(`${requestConfig.authorityUrl}/ec/shopping`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -97,7 +94,7 @@ export const shopping = {
   },
   postCart (product, quantity) {
     return new Promise((resolve, reject) => {
-      axios.post(`${authorityUrl}/ec/shopping`, { product, quantity }, config)
+      axios.post(`${requestConfig.authorityUrl}/ec/shopping`, { product, quantity }, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -108,7 +105,7 @@ export const shopping = {
   },
   patchCart (product, quantity) {
     return new Promise((resolve, reject) => {
-      axios.patch(`${authorityUrl}/ec/shopping`, { product, quantity }, config)
+      axios.patch(`${requestConfig.authorityUrl}/ec/shopping`, { product, quantity }, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -119,7 +116,7 @@ export const shopping = {
   },
   deleteCart (product) {
     return new Promise((resolve, reject) => {
-      axios.delete(`${authorityUrl}/ec/shopping/${product}`, config)
+      axios.delete(`${requestConfig.authorityUrl}/ec/shopping/${product}`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -130,7 +127,7 @@ export const shopping = {
   },
   deleteAllCart () {
     return new Promise((resolve, reject) => {
-      axios.delete(`${authorityUrl}/ec/shopping/all/product`, config)
+      axios.delete(`${requestConfig.authorityUrl}/ec/shopping/all/product`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -143,7 +140,7 @@ export const shopping = {
 export const orders = {
   post (body) {
     return new Promise((resolve, reject) => {
-      axios.post(`${authorityUrl}/ec/orders`, body, config)
+      axios.post(`${requestConfig.authorityUrl}/ec/orders`, body, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -156,7 +153,7 @@ export const orders = {
 export const adminProduct = {
   get (id) {
     return new Promise((resolve, reject) => {
-      axios.get(`${authorityUrl}/admin/ec/product/${id}`, config)
+      axios.get(`${requestConfig.authorityUrl}/admin/ec/product/${id}`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -167,7 +164,7 @@ export const adminProduct = {
   },
   getAll (page = 1) {
     return new Promise((resolve, reject) => {
-      axios.get(`${authorityUrl}/admin/ec/products?page=${page}`, config)
+      axios.get(`${requestConfig.authorityUrl}/admin/ec/products?page=${page}`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -178,7 +175,7 @@ export const adminProduct = {
   },
   post (body) {
     return new Promise((resolve, reject) => {
-      axios.post(`${authorityUrl}/admin/ec/product`, body, config)
+      axios.post(`${requestConfig.authorityUrl}/admin/ec/product`, body, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -189,7 +186,7 @@ export const adminProduct = {
   },
   delete (id) {
     return new Promise((resolve, reject) => {
-      axios.delete(`${authorityUrl}/admin/ec/product/${id}`, config)
+      axios.delete(`${requestConfig.authorityUrl}/admin/ec/product/${id}`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -200,7 +197,7 @@ export const adminProduct = {
   },
   patch (id, body) {
     return new Promise((resolve, reject) => {
-      axios.patch(`${authorityUrl}/admin/ec/product/${id}`, body, config)
+      axios.patch(`${requestConfig.authorityUrl}/admin/ec/product/${id}`, body, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -213,7 +210,7 @@ export const adminProduct = {
 export const adminCoupon = {
   post (data) {
     return new Promise((resolve, reject) => {
-      axios.post(`${authorityUrl}/admin/ec/coupon`, data, config)
+      axios.post(`${requestConfig.authorityUrl}/admin/ec/coupon`, data, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -224,7 +221,7 @@ export const adminCoupon = {
   },
   get (id) {
     return new Promise((resolve, reject) => {
-      axios.get(`${authorityUrl}/admin/ec/coupon/${id}`, config)
+      axios.get(`${requestConfig.authorityUrl}/admin/ec/coupon/${id}`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -235,7 +232,7 @@ export const adminCoupon = {
   },
   getAll (page = 1, paged = 25) {
     return new Promise((resolve, reject) => {
-      axios.get(`${authorityUrl}/admin/ec/coupons?page=${page}&paged=${paged}`, config)
+      axios.get(`${requestConfig.authorityUrl}/admin/ec/coupons?page=${page}&paged=${paged}`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -246,7 +243,7 @@ export const adminCoupon = {
   },
   patch (id, data) {
     return new Promise((resolve, reject) => {
-      axios.patch(`${authorityUrl}/admin/ec/coupon/${id}`, data, config)
+      axios.patch(`${requestConfig.authorityUrl}/admin/ec/coupon/${id}`, data, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -257,7 +254,7 @@ export const adminCoupon = {
   },
   delete (id) {
     return new Promise((resolve, reject) => {
-      axios.delete(`${authorityUrl}/admin/ec/coupon/${id}`, config)
+      axios.delete(`${requestConfig.authorityUrl}/admin/ec/coupon/${id}`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -270,7 +267,7 @@ export const adminCoupon = {
 export const adminOrders = {
   get (id) {
     return new Promise((resolve, reject) => {
-      axios.get(`${authorityUrl}/admin/ec/orders/${id}`, config)
+      axios.get(`${requestConfig.authorityUrl}/admin/ec/orders/${id}`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -281,7 +278,7 @@ export const adminOrders = {
   },
   getAll (page = 1, paged = 25) {
     return new Promise((resolve, reject) => {
-      axios.get(`${authorityUrl}/admin/ec/orders?page=${page}&paged=${paged}`, config)
+      axios.get(`${requestConfig.authorityUrl}/admin/ec/orders?page=${page}&paged=${paged}`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -293,15 +290,15 @@ export const adminOrders = {
 }
 export const adminStorage = {
   createPostRequest (data) {
-    return axios.post(`${authorityUrl}/admin/storage`, data, {
-      ...config,
+    return axios.post(`${requestConfig.authorityUrl}/admin/storage`, data, {
+      ...requestConfig.config,
       mimeType: 'multipart/form-data'
     })
   },
   post (data) {
     return new Promise((resolve, reject) => {
-      axios.post(`${authorityUrl}/admin/storage`, data, {
-        ...config,
+      axios.post(`${requestConfig.authorityUrl}/admin/storage`, data, {
+        ...requestConfig.config,
         mimeType: 'multipart/form-data'
       })
         .then(res => {
@@ -314,7 +311,7 @@ export const adminStorage = {
   },
   getAll (page = 1, paged = 25) {
     return new Promise((resolve, reject) => {
-      axios.get(`${authorityUrl}/admin/storage?page=${page}&paged=${paged}`, config)
+      axios.get(`${requestConfig.authorityUrl}/admin/storage?page=${page}&paged=${paged}`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
@@ -325,7 +322,7 @@ export const adminStorage = {
   },
   delete (id) {
     return new Promise((resolve, reject) => {
-      axios.delete(`${authorityUrl}/admin/storage/${id}`, config)
+      axios.delete(`${requestConfig.authorityUrl}/admin/storage/${id}`, requestConfig.config)
         .then(res => {
           resolve(res.data)
         })
