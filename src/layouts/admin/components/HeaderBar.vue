@@ -23,17 +23,20 @@ export default {
   methods: {
     handleLogoutClick () {
       this.disabled = true
-      auth.logout().then(_ => {
-        removeAccessToken()
-        this.$message({
-          duration: 1000,
-          message: '登出成功',
-          type: 'success',
-          onClose: () => {
-            this.$router.push('/login')
-          }
+      auth.logout()
+        .then(_ => {})
+        .catch(_ => {})
+        .finally(_ => {
+          removeAccessToken()
+          this.$message({
+            duration: 1000,
+            message: '登出成功',
+            type: 'success',
+            onClose: () => {
+              this.$router.push('/login')
+            }
+          })
         })
-      })
     }
   }
 }

@@ -82,8 +82,7 @@ const router = new Router({
     {
       path: '/frontend',
       redirect: (to) => {
-        window.location.hash = ''
-        window.location.pathname = '/'
+        window.location.href = 'index.html'
       }
     }
   ]
