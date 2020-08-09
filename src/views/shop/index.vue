@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { getProducts, shopping } from '@/assets/api/hexschool'
+import { product, shopping } from '@/assets/api/hexschool'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss'
 
@@ -168,7 +168,7 @@ export default {
   methods: {
     fetchProducts: function (currentPage) {
       const vm = this
-      return getProducts(currentPage).then(products => {
+      return product.getAll(currentPage).then(products => {
         if (products.data.length > 0) {
           vm.products.push(...products.data)
           vm.pagination = products.meta.pagination

@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { getProducts, shopping } from '@/assets/api/hexschool'
+import { product, shopping } from '@/assets/api/hexschool'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss'
 
@@ -72,7 +72,7 @@ export default {
     }
   },
   created () {
-    getProducts(this.randomInteger(1, 20), 4).then(result => {
+    product.getAll(this.randomInteger(1, 20), 4).then(result => {
       this.products = result.data
     })
   },

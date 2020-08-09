@@ -1,107 +1,91 @@
-import { getAccessToken } from '@/assets/utils'
+import { accessToken } from '@/assets/utils'
 import axios from 'axios'
 
 const baseUrl = process.env.VUE_APP_APIPATH
-
-function getInfo () {
-  let accessToken = getAccessToken()
-  if (Object.keys(accessToken).length === 0) {
-    accessToken = {
-      uuid: process.env.VUE_APP_UUID,
-      token: process.env.VUE_APP_TOKEN
+const requestConfig = {}
+Object.defineProperties(requestConfig, {
+  'authorityUrl': {
+    get () {
+      let { uuid } = accessToken
+      if (!uuid) {
+        uuid = process.env.VUE_APP_UUID
+      }
+      return `${baseUrl}${uuid}`
     }
-  }
-  return {
-    authorityUrl: `${baseUrl}${accessToken.uuid}`,
-    config: {
-      headers: {
-        'Authorization': 'Bearer ' + accessToken.token
+  },
+  'config': {
+    get () {
+      let { token } = accessToken
+      if (!token) {
+        token = process.env.VUE_APP_UUID
+      }
+      return {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       }
     }
   }
-}
+})
 
-export function getProducts (page = 1, paged = 25) {
-  return new Promise((resolve, reject) => {
-    const { authorityUrl, config } = getInfo()
-    axios.get(`${authorityUrl}/ec/products?page=${page}&paged=${paged}`, config)
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
-}
+const authorityUrl = requestConfig.authorityUrl
+const config = requestConfig.config
 
-export function getAdminProducts (page) {
-  return new Promise((resolve, reject) => {
-    const { authorityUrl, config } = getInfo()
-    axios.get(`${authorityUrl}/admin/ec/products?page=${page}`, config)
-      .then(res => {
-        resolve(res.data)
+export const auth = {
+  login (body) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${baseUrl}auth/login`, body)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error.response.data)
+        })
+    })
+  },
+  logout () {
+    return new Promise((resolve, reject) => {
+      axios.post(`${baseUrl}auth/logout`, {
+        api_token: accessToken.token
       })
-      .catch(error => {
-        reject(error)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error.response.data)
+        })
+    })
+  },
+  check () {
+    return new Promise((resolve, reject) => {
+      axios.post(`${baseUrl}auth/check`, {
+        api_token: accessToken.token
       })
-  })
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error.response.data)
+        })
+    })
+  }
 }
-
-export function patchAdminProduct (id, body) {
-  return new Promise((resolve, reject) => {
-    const { authorityUrl, config } = getInfo()
-    axios.patch(`${authorityUrl}/admin/ec/product/${id}`, body, config)
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
+export const product = {
+  getAll (page = 1, paged = 25) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${authorityUrl}/ec/products?page=${page}&paged=${paged}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
 }
-
-export function deleteAdminProduct (id) {
-  return new Promise((resolve, reject) => {
-    const { authorityUrl, config } = getInfo()
-    axios.delete(`${authorityUrl}/admin/ec/product/${id}`, config)
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
-}
-
-export function postAdminProduct (body) {
-  return new Promise((resolve, reject) => {
-    const { authorityUrl, config } = getInfo()
-    axios.post(`${authorityUrl}/admin/ec/product`, body, config)
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
-}
-
-export function postAdminLogin (body) {
-  return new Promise((resolve, reject) => {
-    axios.post(`${baseUrl}auth/login`, body)
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(error => {
-        reject(error.response.data)
-      })
-  })
-}
-
 export const shopping = {
   getCart () {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.get(`${authorityUrl}/ec/shopping`, config)
         .then(res => {
           resolve(res.data)
@@ -113,7 +97,6 @@ export const shopping = {
   },
   postCart (product, quantity) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.post(`${authorityUrl}/ec/shopping`, { product, quantity }, config)
         .then(res => {
           resolve(res.data)
@@ -125,7 +108,6 @@ export const shopping = {
   },
   patchCart (product, quantity) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.patch(`${authorityUrl}/ec/shopping`, { product, quantity }, config)
         .then(res => {
           resolve(res.data)
@@ -137,7 +119,6 @@ export const shopping = {
   },
   deleteCart (product) {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.delete(`${authorityUrl}/ec/shopping/${product}`, config)
         .then(res => {
           resolve(res.data)
@@ -149,8 +130,202 @@ export const shopping = {
   },
   deleteAllCart () {
     return new Promise((resolve, reject) => {
-      const { authorityUrl, config } = getInfo()
       axios.delete(`${authorityUrl}/ec/shopping/all/product`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
+export const orders = {
+  post (body) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${authorityUrl}/ec/orders`, body, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
+export const adminProduct = {
+  get (id) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${authorityUrl}/admin/ec/product/${id}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  getAll (page = 1) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${authorityUrl}/admin/ec/products?page=${page}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  post (body) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${authorityUrl}/admin/ec/product`, body, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  delete (id) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`${authorityUrl}/admin/ec/product/${id}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  patch (id, body) {
+    return new Promise((resolve, reject) => {
+      axios.patch(`${authorityUrl}/admin/ec/product/${id}`, body, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
+export const adminCoupon = {
+  post (data) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${authorityUrl}/admin/ec/coupon`, data, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  get (id) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${authorityUrl}/admin/ec/coupon/${id}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  getAll (page = 1, paged = 25) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${authorityUrl}/admin/ec/coupons?page=${page}&paged=${paged}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  patch (id, data) {
+    return new Promise((resolve, reject) => {
+      axios.patch(`${authorityUrl}/admin/ec/coupon/${id}`, data, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  delete (id) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`${authorityUrl}/admin/ec/coupon/${id}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
+export const adminOrders = {
+  get (id) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${authorityUrl}/admin/ec/orders/${id}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  getAll (page = 1, paged = 25) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${authorityUrl}/admin/ec/orders?page=${page}&paged=${paged}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
+export const adminStorage = {
+  createPostRequest (data) {
+    return axios.post(`${authorityUrl}/admin/storage`, data, {
+      ...config,
+      mimeType: 'multipart/form-data'
+    })
+  },
+  post (data) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${authorityUrl}/admin/storage`, data, {
+        ...config,
+        mimeType: 'multipart/form-data'
+      })
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  getAll (page = 1, paged = 25) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${authorityUrl}/admin/storage?page=${page}&paged=${paged}`, config)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  delete (id) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`${authorityUrl}/admin/storage/${id}`, config)
         .then(res => {
           resolve(res.data)
         })

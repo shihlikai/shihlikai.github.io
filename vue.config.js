@@ -1,4 +1,4 @@
-// const app = require('./src/app.config')
+const app = require('./src/app.config')
 const path = require('path')
 const webpack = require('webpack')
 
@@ -8,22 +8,22 @@ function resolve (dir) {
 
 module.exports = {
   publicPath: './',
-  // pages: {
-  //   index: {
-  //     entry: 'src/main.js',
-  //     template: 'public/index.html',
-  //     title: `${app.name}`,
-  //     filename: 'index.html',
-  //     chunks: ['chunk-vendors', 'chunk-common', 'index']
-  //   },
-  //   admin: {
-  //     entry: 'src/main.js',
-  //     template: 'public/index.html',
-  //     title: `後台管理平台 - (${app.name})`,
-  //     filename: 'admin.html',
-  //     chunks: ['chunk-vendors', 'chunk-common', 'admin']
-  //   }
-  // },
+  pages: {
+    index: {
+      entry: 'src/main.js',
+      template: 'public/index.html',
+      title: `${app.name}`,
+      filename: 'index.html',
+      chunks: ['chunk-vendors', 'chunk-common', 'index']
+    },
+    admin: {
+      entry: 'src/admin.js',
+      template: 'public/index.html',
+      title: `後台管理平台 - (${app.name})`,
+      filename: 'admin/index.html',
+      chunks: ['chunk-vendors', 'chunk-common', 'admin']
+    }
+  },
   chainWebpack: config => {
     config
       .plugin('provide')
