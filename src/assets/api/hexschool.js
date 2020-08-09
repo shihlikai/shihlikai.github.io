@@ -292,6 +292,12 @@ export const adminOrders = {
   }
 }
 export const adminStorage = {
+  createPostRequest (data) {
+    return axios.post(`${authorityUrl}/admin/storage`, data, {
+      ...config,
+      mimeType: 'multipart/form-data'
+    })
+  },
   post (data) {
     return new Promise((resolve, reject) => {
       axios.post(`${authorityUrl}/admin/storage`, data, {

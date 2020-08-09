@@ -5,7 +5,7 @@
     element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.8)"
   >
-    <div style="display: flex;">
+    <div style="position: relative;display: flex;">
       <div class="el-pagination is-background">
         <ul class="el-pager">
           <li class="number active">總筆數：{{ pagination.total }}</li>

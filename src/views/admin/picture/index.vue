@@ -5,7 +5,7 @@
     element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.8)"
   >
-    <div style="display: flex;">
+    <div style="position: relative;display: flex;">
       <div class="el-pagination is-background">
         <ul class="el-pager">
           <li class="number active">總筆數：{{ pagination.total }}</li>
@@ -32,30 +32,36 @@
         </div>
       </el-table-column>
       <el-table-column prop="path" label="網址" />
+      <el-table-column width="100" label="編輯">
+        <div slot-scope="scope">
+          <el-button type="danger" @click="handleDeleteClick(scope)">刪除</el-button>
+        </div>
+      </el-table-column>
     </el-table>
     <el-drawer
       ref="drawer"
       :visible.sync="dialog"
       :with-header="false"
-      :wrapper-closable="false"
       direction="rtl"
-      size="30%"
+      size="16%"
       style="height: 100%;"
     >
-      <div style="height: 100%; width: 100%; padding: 10px; text-align: center;">
-        <el-form :model="form">
-          <input type="file" @change="processFile($event)">
-          <!--          <el-form-item label="輸入圖片網址">-->
-          <!--            <el-input v-model="form.file" autocomplete="off" />-->
-          <!--          </el-form-item>-->
-          <!--          <div style="border: #1abc9c solid 1px;">-->
-          <!--            <el-image :lazy="true" :src="form.file" style="width: 100%;" />-->
-          <!--          </div>-->
-          <div style="margin-top: 40px;">
-            <el-button @click="cancelForm">取 消</el-button>
-            <el-button type="primary" @click="handleSubmitClick">確 定</el-button>
-          </div>
-        </el-form>
+      <div style="padding: 10px; text-align: center;">
+        <el-upload
+          ref="upload"
+          action="fake"
+          list-type="picture-card"
+          :before-upload="beforeUpload"
+          :on-preview="uploadPreview"
+          :on-success="uploadSuccess"
+          :on-error="uploadError"
+          :http-request="createHttpRequest"
+        >
+          <i class="el-icon-plus" />
+        </el-upload>
+        <el-dialog :visible.sync="dialogVisible">
+          <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
       </div>
     </el-drawer>
   </div>
@@ -66,11 +72,12 @@ import { adminStorage } from '@/assets/api/hexschool'
 
 const storage_list = '圖片列表讀取中'
 const storage_update = '圖片資料更新中'
-// const product_delete = '商品資料刪除中'
+const storage_delete = '圖片資料刪除中'
 
 export default {
   data () {
     return {
+      adminStorage: adminStorage,
       loading: false,
       loadingText: storage_list,
       dialog: false,
@@ -78,7 +85,16 @@ export default {
       form: {
         file: null
       },
-      storages: []
+      storages: [],
+      dialogImageUrl: '',
+      dialogVisible: false
+    }
+  },
+  watch: {
+    dialog () {
+      setTimeout(() => {
+        this.$refs.upload.clearFiles()
+      }, 0)
     }
   },
   created () {
@@ -106,30 +122,58 @@ export default {
       this.form = {}
       this.dialog = true
     },
-    cancelForm () {
-      this.loading = false
-      this.dialog = false
-    },
-    handleSubmitClick () {
-      return new Promise(resolve => {
-        this.loadingText = storage_update
-        this.loading = true
-
-        const formData = new FormData()
-        formData.append('file', this.form.file)
-
-        adminStorage.post(formData).then(response => {
-          return this.updateStorageList()
-        }).then(() => {
-          this.$refs.drawer.closeDrawer()
-        }).finally(() => {
-          this.loading = false
-          resolve()
+    handleDeleteClick ({ row }) {
+      return this.$confirm(`
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <div>
+            <img src="${row.path}" width="50" height="50"/>
+          </div>
+          <div style="word-break: break-all; padding: 5px;">${row.path}</div>
+        </div>`, '確認刪除', {
+        dangerouslyUseHTMLString: true,
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return new Promise(resolve => {
+          this.loadingText = storage_delete
+          this.loading = true
+          adminStorage.delete(row.id)
+            .then(() => {
+              return this.updateStorageList()
+            }).finally(() => {
+              this.loading = false
+              resolve()
+            })
         })
-      })
+      }).catch(_ => {})
     },
     updateStorageList () {
       return this.fetchStorages(this.pagination.current_page)
+    },
+    uploadPreview (file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+    uploadSuccess () {
+      this.loading = false
+      this.updateStorageList()
+        .then(_ => {
+          this.$refs.drawer.closeDrawer()
+        })
+    },
+    uploadError (error) {
+      this.loading = false
+      console.error('error', error.response.data)
+    },
+    beforeUpload () {
+      this.loadingText = storage_update
+      this.loading = true
+    },
+    createHttpRequest (options) {
+      const formData = new FormData()
+      formData.append('file', options.file)
+      return adminStorage.createPostRequest(formData)
     }
   }
 }
